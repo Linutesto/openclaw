@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import Foundation
 import Network
 import Observation
@@ -66,7 +66,7 @@ public final class GatewayDiscoveryModel {
     private var pendingTXTResolvers: [String: GatewayTXTResolver] = [:]
     private var wideAreaFallbackTask: Task<Void, Never>?
     private var wideAreaFallbackGateways: [DiscoveredGateway] = []
-    private let logger = Logger(subsystem: "ai.openclaw", category: "gateway-discovery")
+    private let logger = Logger(subsystem: "ai.openpaw", category: "gateway-discovery")
 
     public init(
         localDisplayName: String? = nil,
@@ -106,7 +106,7 @@ public final class GatewayDiscoveryModel {
             }
 
             self.browsers[domain] = browser
-            browser.start(queue: DispatchQueue(label: "ai.openclaw.macos.gateway-discovery.\(domain)"))
+            browser.start(queue: DispatchQueue(label: "ai.openpaw.macos.gateway-discovery.\(domain)"))
         }
 
         self.scheduleWideAreaFallback()
@@ -456,7 +456,7 @@ public final class GatewayDiscoveryModel {
 
     private nonisolated static func prettifyInstanceName(_ decodedName: String) -> String {
         let normalized = decodedName.split(whereSeparator: \.isWhitespace).joined(separator: " ")
-        let stripped = normalized.replacingOccurrences(of: " (OpenClaw)", with: "")
+        let stripped = normalized.replacingOccurrences(of: " (OpenPaw)", with: "")
             .replacingOccurrences(of: #"\s+\(\d+\)$"#, with: "", options: .regularExpression)
         return stripped.trimmingCharacters(in: .whitespacesAndNewlines)
     }

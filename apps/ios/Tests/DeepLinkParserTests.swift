@@ -1,15 +1,15 @@
-import OpenClawKit
+import OpenPawKit
 import Foundation
 import Testing
 
 @Suite struct DeepLinkParserTests {
     @Test func parseRejectsUnknownHost() {
-        let url = URL(string: "openclaw://nope?message=hi")!
+        let url = URL(string: "openpaw://nope?message=hi")!
         #expect(DeepLinkParser.parse(url) == nil)
     }
 
     @Test func parseHostIsCaseInsensitive() {
-        let url = URL(string: "openclaw://AGENT?message=Hello")!
+        let url = URL(string: "openpaw://AGENT?message=Hello")!
         #expect(DeepLinkParser.parse(url) == .agent(.init(
             message: "Hello",
             sessionKey: nil,
@@ -27,13 +27,13 @@ import Testing
     }
 
     @Test func parseRejectsEmptyMessage() {
-        let url = URL(string: "openclaw://agent?message=%20%20%0A")!
+        let url = URL(string: "openpaw://agent?message=%20%20%0A")!
         #expect(DeepLinkParser.parse(url) == nil)
     }
 
     @Test func parseAgentLinkParsesCommonFields() {
         let url =
-            URL(string: "openclaw://agent?message=Hello&deliver=1&sessionKey=node-test&thinking=low&timeoutSeconds=30")!
+            URL(string: "openpaw://agent?message=Hello&deliver=1&sessionKey=node-test&thinking=low&timeoutSeconds=30")!
         #expect(
             DeepLinkParser.parse(url) == .agent(
                 .init(
@@ -50,7 +50,7 @@ import Testing
     @Test func parseAgentLinkParsesTargetRoutingFields() {
         let url =
             URL(
-                string: "openclaw://agent?message=Hello%20World&deliver=1&to=%2B15551234567&channel=whatsapp&key=secret")!
+                string: "openpaw://agent?message=Hello%20World&deliver=1&to=%2B15551234567&channel=whatsapp&key=secret")!
         #expect(
             DeepLinkParser.parse(url) == .agent(
                 .init(
@@ -65,7 +65,7 @@ import Testing
     }
 
     @Test func parseRejectsNegativeTimeoutSeconds() {
-        let url = URL(string: "openclaw://agent?message=Hello&timeoutSeconds=-1")!
+        let url = URL(string: "openpaw://agent?message=Hello&timeoutSeconds=-1")!
         #expect(DeepLinkParser.parse(url) == .agent(.init(
             message: "Hello",
             sessionKey: nil,

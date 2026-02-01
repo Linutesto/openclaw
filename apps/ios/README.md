@@ -1,4 +1,4 @@
-# OpenClaw (iOS)
+# OpenPaw (iOS)
 
 Internal-only SwiftUI app scaffold.
 
@@ -11,11 +11,11 @@ brew install swiftformat swiftlint
 ```bash
 cd apps/ios
 xcodegen generate
-open OpenClaw.xcodeproj
+open OpenPaw.xcodeproj
 ```
 
 ## Shared packages
-- `../shared/OpenClawKit` — shared types/constants used by iOS (and later macOS bridge + gateway routing).
+- `../shared/OpenPawKit` — shared types/constants used by iOS (and later macOS bridge + gateway routing).
 
 ## fastlane
 ```bash

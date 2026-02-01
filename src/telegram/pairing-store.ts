@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { OpenPawConfig } from "../config/config.js";
 import {
   addChannelAllowFromStoreEntry,
   approveChannelPairingCode,
@@ -97,7 +97,7 @@ export async function approveTelegramPairingCode(params: {
 }
 
 export async function resolveTelegramEffectiveAllowFrom(params: {
-  cfg: OpenClawConfig;
+  cfg: OpenPawConfig;
   env?: NodeJS.ProcessEnv;
 }): Promise<{ dm: string[]; group: string[] }> {
   const env = params.env ?? process.env;

@@ -1,10 +1,10 @@
 import OpenClawChatUI
-import OpenClawKit
+import OpenPawKit
 import OpenClawProtocol
 import Foundation
 import OSLog
 
-private let gatewayConnectionLogger = Logger(subsystem: "ai.openclaw", category: "gateway.connection")
+private let gatewayConnectionLogger = Logger(subsystem: "ai.openpaw", category: "gateway.connection")
 
 enum GatewayAgentChannel: String, Codable, CaseIterable, Sendable {
     case last

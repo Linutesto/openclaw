@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import Foundation
 import Observation
 import OSLog
@@ -10,7 +10,7 @@ import AppKit
 import UIKit
 #endif
 
-private let chatUILogger = Logger(subsystem: "ai.openclaw", category: "OpenClawChatUI")
+private let chatUILogger = Logger(subsystem: "ai.openpaw", category: "OpenClawChatUI")
 
 @MainActor
 @Observable

@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { runCommandWithTimeout } from "../process/exec.js";
 import { discoverGatewayBeacons } from "./bonjour-discovery.js";
 
-const WIDE_AREA_DOMAIN = "openclaw.internal.";
+const WIDE_AREA_DOMAIN = "openpaw.internal.";
 
 describe("bonjour-discovery", () => {
   it("discovers beacons on darwin across local + wide-area domains", async () => {
@@ -233,7 +233,7 @@ describe("bonjour-discovery", () => {
               `"transport=gateway"`,
               `"sshPort=22"`,
               `"tailnetDns=peters-mac-studio-1.sheep-coho.ts.net"`,
-              `"cliPath=/opt/homebrew/bin/openclaw"`,
+              `"cliPath=/opt/homebrew/bin/openpaw"`,
               "",
             ].join(" "),
             stderr: "",
@@ -265,7 +265,7 @@ describe("bonjour-discovery", () => {
         tailnetDns: "peters-mac-studio-1.sheep-coho.ts.net",
         gatewayPort: 18789,
         sshPort: 22,
-        cliPath: "/opt/homebrew/bin/openclaw",
+        cliPath: "/opt/homebrew/bin/openpaw",
       }),
     ]);
 
@@ -289,12 +289,12 @@ describe("bonjour-discovery", () => {
     await discoverGatewayBeacons({
       platform: "darwin",
       timeoutMs: 1,
-      domains: ["local", "openclaw.internal"],
+      domains: ["local", "openpaw.internal"],
       run: run as unknown as typeof runCommandWithTimeout,
     });
 
     expect(calls.filter((c) => c[1] === "-B").map((c) => c[3])).toEqual(
-      expect.arrayContaining(["local.", "openclaw.internal."]),
+      expect.arrayContaining(["local.", "openpaw.internal."]),
     );
 
     calls.length = 0;

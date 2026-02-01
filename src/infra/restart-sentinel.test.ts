@@ -15,16 +15,16 @@ describe("restart sentinel", () => {
   let tempDir: string;
 
   beforeEach(async () => {
-    prevStateDir = process.env.OPENCLAW_STATE_DIR;
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-sentinel-"));
-    process.env.OPENCLAW_STATE_DIR = tempDir;
+    prevStateDir = process.env.OPENPAW_STATE_DIR;
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openpaw-sentinel-"));
+    process.env.OPENPAW_STATE_DIR = tempDir;
   });
 
   afterEach(async () => {
     if (prevStateDir) {
-      process.env.OPENCLAW_STATE_DIR = prevStateDir;
+      process.env.OPENPAW_STATE_DIR = prevStateDir;
     } else {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.OPENPAW_STATE_DIR;
     }
     await fs.rm(tempDir, { recursive: true, force: true });
   });

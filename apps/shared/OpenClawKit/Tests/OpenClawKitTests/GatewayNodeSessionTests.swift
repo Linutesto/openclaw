@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import OpenClawKit
+@testable import OpenPawKit
 import OpenClawProtocol
 
 struct GatewayNodeSessionTests {

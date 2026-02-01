@@ -1,4 +1,4 @@
-package ai.openclaw.android.ui
+package ai.openpaw.android.ui
 
 import android.annotation.SuppressLint
 import android.Manifest
@@ -65,8 +65,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
-import ai.openclaw.android.CameraHudKind
-import ai.openclaw.android.MainViewModel
+import ai.openpaw.android.CameraHudKind
+import ai.openpaw.android.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

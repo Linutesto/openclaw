@@ -1,4 +1,4 @@
-import type { RuntimeEnv, ReplyPayload, OpenClawConfig } from "openclaw/plugin-sdk";
+import type { RuntimeEnv, ReplyPayload, OpenClawConfig } from "openpaw/plugin-sdk";
 import { format } from "node:util";
 import { getTlonRuntime } from "../runtime.js";
 import { normalizeShip, parseChannelNest } from "../targets.js";

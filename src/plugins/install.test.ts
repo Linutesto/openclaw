@@ -9,7 +9,7 @@ import { afterEach, describe, expect, it } from "vitest";
 const tempDirs: string[] = [];
 
 function makeTempDir() {
-  const dir = path.join(os.tmpdir(), `openclaw-plugin-install-${randomUUID()}`);
+  const dir = path.join(os.tmpdir(), `openpaw-plugin-install-${randomUUID()}`);
   fs.mkdirSync(dir, { recursive: true });
   tempDirs.push(dir);
   return dir;
@@ -92,7 +92,7 @@ afterEach(() => {
 });
 
 describe("installPluginFromArchive", () => {
-  it("installs into ~/.openclaw/extensions and uses unscoped id", async () => {
+  it("installs into ~/.openpaw/extensions and uses unscoped id", async () => {
     const stateDir = makeTempDir();
     const workDir = makeTempDir();
     const pkgDir = path.join(workDir, "package");
@@ -100,9 +100,9 @@ describe("installPluginFromArchive", () => {
     fs.writeFileSync(
       path.join(pkgDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/voice-call",
+        name: "@openpaw/voice-call",
         version: "0.0.1",
-        openclaw: { extensions: ["./dist/index.js"] },
+        openpaw: { extensions: ["./dist/index.js"] },
       }),
       "utf-8",
     );
@@ -138,9 +138,9 @@ describe("installPluginFromArchive", () => {
     fs.writeFileSync(
       path.join(pkgDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/voice-call",
+        name: "@openpaw/voice-call",
         version: "0.0.1",
-        openclaw: { extensions: ["./dist/index.js"] },
+        openpaw: { extensions: ["./dist/index.js"] },
       }),
       "utf-8",
     );
@@ -180,9 +180,9 @@ describe("installPluginFromArchive", () => {
     zip.file(
       "package/package.json",
       JSON.stringify({
-        name: "@openclaw/zipper",
+        name: "@openpaw/zipper",
         version: "0.0.1",
-        openclaw: { extensions: ["./dist/index.js"] },
+        openpaw: { extensions: ["./dist/index.js"] },
       }),
     );
     zip.file("package/dist/index.js", "export {};");
@@ -214,9 +214,9 @@ describe("installPluginFromArchive", () => {
     fs.writeFileSync(
       path.join(pkgDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/voice-call",
+        name: "@openpaw/voice-call",
         version: "0.0.1",
-        openclaw: { extensions: ["./dist/index.js"] },
+        openpaw: { extensions: ["./dist/index.js"] },
       }),
       "utf-8",
     );
@@ -232,9 +232,9 @@ describe("installPluginFromArchive", () => {
       fs.writeFileSync(
         path.join(pkgDir, "package.json"),
         JSON.stringify({
-          name: "@openclaw/voice-call",
+          name: "@openpaw/voice-call",
           version: "0.0.2",
-          openclaw: { extensions: ["./dist/index.js"] },
+          openpaw: { extensions: ["./dist/index.js"] },
         }),
         "utf-8",
       );
@@ -268,14 +268,14 @@ describe("installPluginFromArchive", () => {
     expect(manifest.version).toBe("0.0.2");
   });
 
-  it("rejects packages without openclaw.extensions", async () => {
+  it("rejects packages without openpaw.extensions", async () => {
     const stateDir = makeTempDir();
     const workDir = makeTempDir();
     const pkgDir = path.join(workDir, "package");
     fs.mkdirSync(pkgDir, { recursive: true });
     fs.writeFileSync(
       path.join(pkgDir, "package.json"),
-      JSON.stringify({ name: "@openclaw/nope", version: "0.0.1" }),
+      JSON.stringify({ name: "@openpaw/nope", version: "0.0.1" }),
       "utf-8",
     );
 
@@ -295,6 +295,6 @@ describe("installPluginFromArchive", () => {
     if (result.ok) {
       return;
     }
-    expect(result.error).toContain("openclaw.extensions");
+    expect(result.error).toContain("openpaw.extensions");
   });
 });

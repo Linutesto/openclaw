@@ -2,7 +2,7 @@ import AppKit
 import OpenClawChatUI
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import OpenPaw
 
 @Suite(.serialized)
 @MainActor

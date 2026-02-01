@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import OpenClawProtocol
 import Foundation
 import Observation
@@ -22,7 +22,7 @@ final class CronJobsStore {
     var lastError: String?
     var statusMessage: String?
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "cron.ui")
+    private let logger = Logger(subsystem: "ai.openpaw", category: "cron.ui")
     private var refreshTask: Task<Void, Never>?
     private var runsTask: Task<Void, Never>?
     private var eventTask: Task<Void, Never>?

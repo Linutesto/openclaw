@@ -12,7 +12,7 @@ private struct NodeInvokeRequestPayload: Codable, Sendable {
 }
 
 public actor GatewayNodeSession {
-    private let logger = Logger(subsystem: "ai.openclaw", category: "node.gateway")
+    private let logger = Logger(subsystem: "ai.openpaw", category: "node.gateway")
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
     private var channel: GatewayChannelActor?

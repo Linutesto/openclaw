@@ -2,7 +2,7 @@ import OpenClawProtocol
 import Foundation
 
 enum OpenClawConfigFile {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "config")
+    private static let logger = Logger(subsystem: "ai.openpaw", category: "config")
 
     static func url() -> URL {
         OpenClawPaths.configURL

@@ -1,5 +1,5 @@
 ---
-summary: "First-run onboarding flow for OpenClaw (macOS app)"
+summary: "First-run onboarding flow for OpenPaw (macOS app)"
 read_when:
   - Designing the macOS onboarding assistant
   - Implementing auth or identity setup
@@ -45,7 +45,7 @@ The macOS app supports Anthropic OAuth (Claude Pro/Max). The flow:
 
 - Opens the browser for OAuth (PKCE)
 - Asks the user to paste the `code#state` value
-- Writes credentials to `~/.openclaw/credentials/oauth.json`
+- Writes credentials to `~/.openpaw/credentials/oauth.json`
 
 Other providers (OpenAI, custom APIs) are configured via environment variables
 or config files for now.
@@ -67,7 +67,7 @@ Onboarding requests TCC permissions needed for:
 
 ## 5) CLI (optional)
 
-The app can install the global `openclaw` CLI via npm/pnpm so terminal
+The app can install the global `openpaw` CLI via npm/pnpm so terminal
 workflows and launchd tasks work out of the box.
 
 ## 6) Onboarding chat (dedicated session)
@@ -78,7 +78,7 @@ from your normal conversation.
 
 ## Agent bootstrap ritual
 
-On the first agent run, OpenClaw bootstraps a workspace (default `~/.openclaw/workspace`):
+On the first agent run, OpenPaw bootstraps a workspace (default `~/.openpaw/workspace`):
 
 - Seeds `AGENTS.md`, `BOOTSTRAP.md`, `IDENTITY.md`, `USER.md`
 - Runs a short Q&A ritual (one question at a time)
@@ -90,7 +90,7 @@ On the first agent run, OpenClaw bootstraps a workspace (default `~/.openclaw/wo
 Gmail Pub/Sub setup is currently a manual step. Use:
 
 ```bash
-openclaw webhooks gmail setup --account you@gmail.com
+openpaw webhooks gmail setup --account you@gmail.com
 ```
 
 See [/automation/gmail-pubsub](/automation/gmail-pubsub) for details.
@@ -100,7 +100,7 @@ See [/automation/gmail-pubsub](/automation/gmail-pubsub) for details.
 When the Gateway runs on another machine, credentials and workspace files live
 **on that host**. If you need OAuth in remote mode, create:
 
-- `~/.openclaw/credentials/oauth.json`
-- `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`
+- `~/.openpaw/credentials/oauth.json`
+- `~/.openpaw/agents/<agentId>/agent/auth-profiles.json`
 
 on the gateway host.

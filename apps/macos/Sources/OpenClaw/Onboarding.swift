@@ -7,7 +7,7 @@ import Observation
 import SwiftUI
 
 enum UIStrings {
-    static let welcomeTitle = "Welcome to OpenClaw"
+    static let welcomeTitle = "Welcome to OpenPaw"
 }
 
 @MainActor
@@ -18,7 +18,7 @@ final class OnboardingController {
     func show() {
         if ProcessInfo.processInfo.isNixMode {
             // Nix mode is fully declarative; onboarding would suggest interactive setup that doesn't apply.
-            UserDefaults.standard.set(true, forKey: "openclaw.onboardingSeen")
+            UserDefaults.standard.set(true, forKey: "openpaw.onboardingSeen")
             UserDefaults.standard.set(currentOnboardingVersion, forKey: onboardingVersionKey)
             AppStateStore.shared.onboardingSeen = true
             return
@@ -156,7 +156,7 @@ struct OnboardingView: View {
     var canAdvance: Bool { !self.isWizardBlocking }
     var devLinkCommand: String {
         let version = GatewayEnvironment.expectedGatewayVersionString() ?? "latest"
-        return "npm install -g openclaw@\(version)"
+        return "npm install -g openpaw@\(version)"
     }
 
     struct LocalGatewayProbe: Equatable {

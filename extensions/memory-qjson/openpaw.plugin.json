@@ -1,0 +1,58 @@
+{
+  "id": "memory-qjson",
+  "kind": "memory",
+  "uiHints": {
+    "qjsonPath": {
+      "label": "QJSON Agents Path",
+      "placeholder": "/home/yan/Desktop/Qjson_agents",
+      "help": "Path to QJSON Agents installation"
+    },
+    "pythonPath": {
+      "label": "Python Path",
+      "placeholder": "/home/yan/Desktop/Qjson_agents/.venv/bin/python3",
+      "help": "Path to Python with QJSON installed"
+    },
+    "embeddingModel": {
+      "label": "Embedding Model",
+      "placeholder": "nomic-embed-text",
+      "help": "Ollama embedding model to use"
+    },
+    "topK": {
+      "label": "Top K Results",
+      "placeholder": "8",
+      "help": "Number of memories to retrieve"
+    },
+    "autoCapture": {
+      "label": "Auto-Capture",
+      "help": "Automatically capture important information from conversations"
+    },
+    "autoRecall": {
+      "label": "Auto-Recall",
+      "help": "Automatically inject relevant memories into context"
+    }
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "qjsonPath": {
+        "type": "string"
+      },
+      "pythonPath": {
+        "type": "string"
+      },
+      "embeddingModel": {
+        "type": "string"
+      },
+      "topK": {
+        "type": "number"
+      },
+      "autoCapture": {
+        "type": "boolean"
+      },
+      "autoRecall": {
+        "type": "boolean"
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
-import OpenClawKit
+import OpenPawKit
 import Foundation
 import Testing
 import UIKit
-@testable import OpenClaw
+@testable import OpenPaw
 
 private func withUserDefaults<T>(_ updates: [String: Any?], _ body: () throws -> T) rethrows -> T {
     let defaults = UserDefaults.standard

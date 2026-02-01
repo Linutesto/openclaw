@@ -1,7 +1,7 @@
-import OpenClawKit
+import OpenPawKit
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import OpenPaw
 @testable import OpenClawIPC
 
 private final class FakeWebSocketTask: WebSocketTasking, @unchecked Sendable {

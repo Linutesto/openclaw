@@ -1,4 +1,4 @@
-package ai.openclaw.android
+package ai.openpaw.android
 
 import android.Manifest
 import android.content.Context
@@ -7,35 +7,35 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
-import ai.openclaw.android.chat.ChatController
-import ai.openclaw.android.chat.ChatMessage
-import ai.openclaw.android.chat.ChatPendingToolCall
-import ai.openclaw.android.chat.ChatSessionEntry
-import ai.openclaw.android.chat.OutgoingAttachment
-import ai.openclaw.android.gateway.DeviceAuthStore
-import ai.openclaw.android.gateway.DeviceIdentityStore
-import ai.openclaw.android.gateway.GatewayClientInfo
-import ai.openclaw.android.gateway.GatewayConnectOptions
-import ai.openclaw.android.gateway.GatewayDiscovery
-import ai.openclaw.android.gateway.GatewayEndpoint
-import ai.openclaw.android.gateway.GatewaySession
-import ai.openclaw.android.gateway.GatewayTlsParams
-import ai.openclaw.android.node.CameraCaptureManager
-import ai.openclaw.android.node.LocationCaptureManager
-import ai.openclaw.android.BuildConfig
-import ai.openclaw.android.node.CanvasController
-import ai.openclaw.android.node.ScreenRecordManager
-import ai.openclaw.android.node.SmsManager
-import ai.openclaw.android.protocol.OpenClawCapability
-import ai.openclaw.android.protocol.OpenClawCameraCommand
-import ai.openclaw.android.protocol.OpenClawCanvasA2UIAction
-import ai.openclaw.android.protocol.OpenClawCanvasA2UICommand
-import ai.openclaw.android.protocol.OpenClawCanvasCommand
-import ai.openclaw.android.protocol.OpenClawScreenCommand
-import ai.openclaw.android.protocol.OpenClawLocationCommand
-import ai.openclaw.android.protocol.OpenClawSmsCommand
-import ai.openclaw.android.voice.TalkModeManager
-import ai.openclaw.android.voice.VoiceWakeManager
+import ai.openpaw.android.chat.ChatController
+import ai.openpaw.android.chat.ChatMessage
+import ai.openpaw.android.chat.ChatPendingToolCall
+import ai.openpaw.android.chat.ChatSessionEntry
+import ai.openpaw.android.chat.OutgoingAttachment
+import ai.openpaw.android.gateway.DeviceAuthStore
+import ai.openpaw.android.gateway.DeviceIdentityStore
+import ai.openpaw.android.gateway.GatewayClientInfo
+import ai.openpaw.android.gateway.GatewayConnectOptions
+import ai.openpaw.android.gateway.GatewayDiscovery
+import ai.openpaw.android.gateway.GatewayEndpoint
+import ai.openpaw.android.gateway.GatewaySession
+import ai.openpaw.android.gateway.GatewayTlsParams
+import ai.openpaw.android.node.CameraCaptureManager
+import ai.openpaw.android.node.LocationCaptureManager
+import ai.openpaw.android.BuildConfig
+import ai.openpaw.android.node.CanvasController
+import ai.openpaw.android.node.ScreenRecordManager
+import ai.openpaw.android.node.SmsManager
+import ai.openpaw.android.protocol.OpenClawCapability
+import ai.openpaw.android.protocol.OpenClawCameraCommand
+import ai.openpaw.android.protocol.OpenClawCanvasA2UIAction
+import ai.openpaw.android.protocol.OpenClawCanvasA2UICommand
+import ai.openpaw.android.protocol.OpenClawCanvasCommand
+import ai.openpaw.android.protocol.OpenClawScreenCommand
+import ai.openpaw.android.protocol.OpenClawLocationCommand
+import ai.openpaw.android.protocol.OpenClawSmsCommand
+import ai.openpaw.android.voice.TalkModeManager
+import ai.openpaw.android.voice.VoiceWakeManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -529,7 +529,7 @@ class NodeRuntime(context: Context) {
       caps = buildCapabilities(),
       commands = buildInvokeCommands(),
       permissions = emptyMap(),
-      client = buildClientInfo(clientId = "openclaw-android", clientMode = "node"),
+      client = buildClientInfo(clientId = "openpaw-android", clientMode = "node"),
       userAgent = buildUserAgent(),
     )
   }
@@ -541,7 +541,7 @@ class NodeRuntime(context: Context) {
       caps = emptyList(),
       commands = emptyList(),
       permissions = emptyMap(),
-      client = buildClientInfo(clientId = "openclaw-control-ui", clientMode = "ui"),
+      client = buildClientInfo(clientId = "openpaw-control-ui", clientMode = "ui"),
       userAgent = buildUserAgent(),
     )
   }

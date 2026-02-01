@@ -1,5 +1,5 @@
 import OpenClawChatUI
-import OpenClawKit
+import OpenPawKit
 import OpenClawProtocol
 import Foundation
 

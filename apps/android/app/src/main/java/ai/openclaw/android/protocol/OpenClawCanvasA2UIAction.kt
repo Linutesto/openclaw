@@ -1,4 +1,4 @@
-package ai.openclaw.android.protocol
+package ai.openpaw.android.protocol
 
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -61,6 +61,6 @@ object OpenClawCanvasA2UIAction {
     val err = (error ?: "").replace("\\", "\\\\").replace("\"", "\\\"")
     val okLiteral = if (ok) "true" else "false"
     val idEscaped = actionId.replace("\\", "\\\\").replace("\"", "\\\"")
-    return "window.dispatchEvent(new CustomEvent('openclaw:a2ui-action-status', { detail: { id: \"${idEscaped}\", ok: ${okLiteral}, error: \"${err}\" } }));"
+    return "window.dispatchEvent(new CustomEvent('openpaw:a2ui-action-status', { detail: { id: \"${idEscaped}\", ok: ${okLiteral}, error: \"${err}\" } }));"
   }
 }

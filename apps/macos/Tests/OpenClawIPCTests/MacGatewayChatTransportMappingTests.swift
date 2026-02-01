@@ -1,7 +1,7 @@
 import OpenClawChatUI
 import OpenClawProtocol
 import Testing
-@testable import OpenClaw
+@testable import OpenPaw
 
 @Suite struct MacGatewayChatTransportMappingTests {
     @Test func snapshotMapsToHealth() {

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-IMAGE_NAME="openclaw-doctor-install-switch-e2e"
+IMAGE_NAME="openpaw-doctor-install-switch-e2e"
 
 echo "Building Docker image..."
 docker build -t "$IMAGE_NAME" -f "$ROOT_DIR/scripts/e2e/Dockerfile" "$ROOT_DIR"
@@ -17,10 +17,10 @@ docker run --rm -t "$IMAGE_NAME" bash -lc '
   export npm_config_audit=false
 
   # Stub systemd/loginctl so doctor + daemon flows work in Docker.
-  export PATH="/tmp/openclaw-bin:$PATH"
-  mkdir -p /tmp/openclaw-bin
+  export PATH="/tmp/openpaw-bin:$PATH"
+  mkdir -p /tmp/openpaw-bin
 
-  cat > /tmp/openclaw-bin/systemctl <<"SYSTEMCTL"
+  cat > /tmp/openpaw-bin/systemctl <<"SYSTEMCTL"
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -54,9 +54,9 @@ case "$cmd" in
     ;;
 esac
 SYSTEMCTL
-  chmod +x /tmp/openclaw-bin/systemctl
+  chmod +x /tmp/openpaw-bin/systemctl
 
-  cat > /tmp/openclaw-bin/loginctl <<"LOGINCTL"
+  cat > /tmp/openpaw-bin/loginctl <<"LOGINCTL"
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -69,7 +69,7 @@ if [[ "$*" == *"enable-linger"* ]]; then
 fi
 exit 0
 LOGINCTL
-  chmod +x /tmp/openclaw-bin/loginctl
+  chmod +x /tmp/openpaw-bin/loginctl
 
   # Install the npm-global variant from the local /app source.
   # `npm pack` can emit script output; keep only the tarball name.
@@ -80,9 +80,9 @@ LOGINCTL
   fi
   npm install -g --prefix /tmp/npm-prefix "/app/$pkg_tgz"
 
-  npm_bin="/tmp/npm-prefix/bin/openclaw"
-  npm_entry="/tmp/npm-prefix/lib/node_modules/openclaw/openclaw.mjs"
-  git_entry="/app/openclaw.mjs"
+  npm_bin="/tmp/npm-prefix/bin/openpaw"
+  npm_entry="/tmp/npm-prefix/lib/node_modules/openpaw/openpaw.mjs"
+  git_entry="/app/openpaw.mjs"
 
   assert_entrypoint() {
     local unit_path="$1"
@@ -113,13 +113,13 @@ LOGINCTL
     local doctor_expected="$5"
 
     echo "== Flow: $name =="
-    home_dir=$(mktemp -d "/tmp/openclaw-switch-${name}.XXXXXX")
+    home_dir=$(mktemp -d "/tmp/openpaw-switch-${name}.XXXXXX")
     export HOME="$home_dir"
     export USER="testuser"
 
     eval "$install_cmd"
 
-    unit_path="$HOME/.config/systemd/user/openclaw-gateway.service"
+    unit_path="$HOME/.config/systemd/user/openpaw-gateway.service"
     if [ ! -f "$unit_path" ]; then
       echo "Missing unit file: $unit_path"
       exit 1

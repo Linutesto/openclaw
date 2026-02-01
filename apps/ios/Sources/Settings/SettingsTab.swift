@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import Network
 import Observation
 import SwiftUI
@@ -213,7 +213,7 @@ struct SettingsTab: View {
 
                 Section("Screen") {
                     Toggle("Prevent Sleep", isOn: self.$preventSleep)
-                    Text("Keeps the screen awake while OpenClaw is open.")
+                    Text("Keeps the screen awake while OpenPaw is open.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }

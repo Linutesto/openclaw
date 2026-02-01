@@ -1,18 +1,18 @@
 {
-  "name": "@openclaw/googlechat",
+  "name": "@openpaw/googlechat",
   "version": "2026.1.30",
-  "description": "OpenClaw Google Chat channel plugin",
+  "description": "OpenPaw Google Chat channel plugin",
   "type": "module",
   "dependencies": {
     "google-auth-library": "^10.5.0"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "openpaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.1.26"
+    "openpaw": ">=2026.1.26"
   },
-  "openclaw": {
+  "openpaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -31,7 +31,7 @@
       "order": 55
     },
     "install": {
-      "npmSpec": "@openclaw/googlechat",
+      "npmSpec": "@openpaw/googlechat",
       "localPath": "extensions/googlechat",
       "defaultChoice": "npm"
     }

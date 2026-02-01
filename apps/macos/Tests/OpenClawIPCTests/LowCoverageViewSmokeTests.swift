@@ -3,7 +3,7 @@ import OpenClawProtocol
 import SwiftUI
 import Testing
 
-@testable import OpenClaw
+@testable import OpenPaw
 
 @Suite(.serialized)
 @MainActor

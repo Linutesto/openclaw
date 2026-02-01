@@ -1,6 +1,6 @@
 import path from "node:path";
 import type { MsgContext } from "../auto-reply/templating.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OpenPawConfig } from "../config/config.js";
 import type {
   MediaUnderstandingCapability,
   MediaUnderstandingDecision,
@@ -89,7 +89,7 @@ function xmlEscapeAttr(value: string): string {
   return value.replace(/[<>&"']/g, (char) => XML_ESCAPE_MAP[char] ?? char);
 }
 
-function resolveFileLimits(cfg: OpenClawConfig) {
+function resolveFileLimits(cfg: OpenPawConfig) {
   const files = cfg.gateway?.http?.endpoints?.responses?.files;
   return {
     allowUrl: files?.allowUrl ?? true,
@@ -334,7 +334,7 @@ async function extractFileBlocks(params: {
 
 export async function applyMediaUnderstanding(params: {
   ctx: MsgContext;
-  cfg: OpenClawConfig;
+  cfg: OpenPawConfig;
   agentDir?: string;
   providers?: Record<string, MediaUnderstandingProvider>;
   activeModel?: ActiveMediaModel;

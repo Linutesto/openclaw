@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import Darwin
 import Foundation
 import Network
@@ -283,7 +283,7 @@ final class GatewayConnectionController {
             caps: self.currentCaps(),
             commands: self.currentCommands(),
             permissions: [:],
-            clientId: "openclaw-ios",
+            clientId: "openpaw-ios",
             clientMode: "node",
             clientDisplayName: displayName)
     }

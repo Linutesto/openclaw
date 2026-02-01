@@ -1,11 +1,11 @@
 ---
-summary: "CLI reference for `openclaw onboard` (interactive onboarding wizard)"
+summary: "CLI reference for `openpaw onboard` (interactive onboarding wizard)"
 read_when:
   - You want guided setup for gateway, workspace, auth, channels, and skills
 title: "onboard"
 ---
 
-# `openclaw onboard`
+# `openpaw onboard`
 
 Interactive onboarding wizard (local or remote Gateway setup).
 
@@ -16,14 +16,14 @@ Related:
 ## Examples
 
 ```bash
-openclaw onboard
-openclaw onboard --flow quickstart
-openclaw onboard --flow manual
-openclaw onboard --mode remote --remote-url ws://gateway-host:18789
+openpaw onboard
+openpaw onboard --flow quickstart
+openpaw onboard --flow manual
+openpaw onboard --mode remote --remote-url ws://gateway-host:18789
 ```
 
 Flow notes:
 
 - `quickstart`: minimal prompts, auto-generates a gateway token.
 - `manual`: full prompts for port/bind/auth (alias of `advanced`).
-- Fastest first chat: `openclaw dashboard` (Control UI, no channel setup).
+- Fastest first chat: `openpaw dashboard` (Control UI, no channel setup).

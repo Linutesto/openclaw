@@ -393,7 +393,7 @@ describe("monitorSlackProvider tool results", () => {
       event: {
         type: "message",
         user: "U1",
-        text: "openclaw: hello",
+        text: "openpaw: hello",
         ts: "123",
         channel: "C1",
         channel_type: "channel",
@@ -440,7 +440,7 @@ describe("monitorSlackProvider tool results", () => {
       event: {
         type: "message",
         user: "U1",
-        text: "openclaw: hello <@U2>",
+        text: "openpaw: hello <@U2>",
         ts: "123",
         channel: "C1",
         channel_type: "channel",

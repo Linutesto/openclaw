@@ -7,7 +7,7 @@ let getTelegramSequentialKey: typeof import("./bot.js").getTelegramSequentialKey
 let resetInboundDedupe: typeof import("../auto-reply/reply/inbound-dedupe.js").resetInboundDedupe;
 
 const { sessionStorePath } = vi.hoisted(() => ({
-  sessionStorePath: `/tmp/openclaw-telegram-throttler-${Math.random().toString(16).slice(2)}.json`,
+  sessionStorePath: `/tmp/openpaw-telegram-throttler-${Math.random().toString(16).slice(2)}.json`,
 }));
 const { loadWebMedia } = vi.hoisted(() => ({
   loadWebMedia: vi.fn(),

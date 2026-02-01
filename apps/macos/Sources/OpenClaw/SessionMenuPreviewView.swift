@@ -1,5 +1,5 @@
 import OpenClawChatUI
-import OpenClawKit
+import OpenPawKit
 import OpenClawProtocol
 import OSLog
 import SwiftUI
@@ -221,7 +221,7 @@ struct SessionMenuPreviewView: View {
 }
 
 enum SessionMenuPreviewLoader {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "SessionPreview")
+    private static let logger = Logger(subsystem: "ai.openpaw", category: "SessionPreview")
     private static let previewTimeoutSeconds: Double = 4
     private static let cacheMaxAgeSeconds: TimeInterval = 30
     private static let previewMaxChars = 240
@@ -385,7 +385,7 @@ enum SessionMenuPreviewLoader {
         maxItems: Int) -> [SessionPreviewItem]
     {
         let boundedItems = self.normalizeMaxItems(maxItems)
-        let raw: [OpenClawKit.AnyCodable] = payload.messages ?? []
+        let raw: [OpenPawKit.AnyCodable] = payload.messages ?? []
         let messages = self.decodeMessages(raw)
         let built = messages.compactMap { message -> SessionPreviewItem? in
             guard let text = self.previewText(for: message) else { return nil }
@@ -399,7 +399,7 @@ enum SessionMenuPreviewLoader {
         return Array(trimmed.reversed())
     }
 
-    private static func decodeMessages(_ raw: [OpenClawKit.AnyCodable]) -> [OpenClawChatMessage] {
+    private static func decodeMessages(_ raw: [OpenPawKit.AnyCodable]) -> [OpenClawChatMessage] {
         raw.compactMap { item in
             guard let data = try? JSONEncoder().encode(item) else { return nil }
             return try? JSONDecoder().decode(OpenClawChatMessage.self, from: data)

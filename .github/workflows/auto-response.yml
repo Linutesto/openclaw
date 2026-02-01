@@ -51,7 +51,7 @@ jobs:
                 lock: true,
                 lockReason: "off-topic",
                 message:
-                  "OpenClaw is not affiliated with Moltbook, and issues related to Moltbook should not be submitted here.",
+                  "OpenPaw is not affiliated with Moltbook, and issues related to Moltbook should not be submitted here.",
               },
             ];
 

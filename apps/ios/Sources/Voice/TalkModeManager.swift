@@ -1,5 +1,5 @@
 import AVFAudio
-import OpenClawKit
+import OpenPawKit
 import OpenClawProtocol
 import Foundation
 import Observation

@@ -80,7 +80,7 @@ export async function agentCommand(
     const knownAgents = listAgentIds(cfg);
     if (!knownAgents.includes(agentIdOverride)) {
       throw new Error(
-        `Unknown agent id "${agentIdOverrideRaw}". Use "${formatCliCommand("openclaw agents list")}" to see configured agents.`,
+        `Unknown agent id "${agentIdOverrideRaw}". Use "${formatCliCommand("openpaw agents list")}" to see configured agents.`,
       );
     }
   }
@@ -508,6 +508,31 @@ export async function agentCommand(
         fallbackModel,
         result,
       });
+    }
+
+    // Auto-tools mode: log tool execution status and warn about pending client tools
+    const autoTools = opts.autoTools === true;
+    const _maxIterations = opts.maxToolIterations ?? 10; // Reserved for future tool iteration loop
+    if (autoTools) {
+      const stopReason = result.meta.stopReason;
+      const pendingToolCalls = result.meta.pendingToolCalls ?? [];
+      if (pendingToolCalls.length > 0) {
+        runtime.log(
+          `[auto-tools] Warning: ${pendingToolCalls.length} client tool call(s) pending but cannot be executed locally:`,
+        );
+        for (const call of pendingToolCalls) {
+          runtime.log(
+            `  - ${call.name}(${call.arguments.slice(0, 100)}${call.arguments.length > 100 ? "..." : ""})`,
+          );
+        }
+        runtime.log(
+          `[auto-tools] Client tools require external execution. Built-in tools (bash, file ops) are executed automatically.`,
+        );
+      } else if (stopReason === "tool_calls") {
+        runtime.log(`[auto-tools] Agent stopped with tool_calls but no pending tools found.`);
+      } else {
+        runtime.log(`[auto-tools] Agent completed. All built-in tools executed automatically.`);
+      }
     }
 
     const payloads = result.payloads ?? [];

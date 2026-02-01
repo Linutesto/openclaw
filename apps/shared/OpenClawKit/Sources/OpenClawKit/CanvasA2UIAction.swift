@@ -97,7 +97,7 @@ public enum OpenClawCanvasA2UIAction: Sendable {
         return """
         (() => {
           const detail = \(json);
-          window.dispatchEvent(new CustomEvent('openclaw:a2ui-action-status', { detail }));
+          window.dispatchEvent(new CustomEvent('openpaw:a2ui-action-status', { detail }));
         })();
         """
     }

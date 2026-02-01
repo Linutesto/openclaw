@@ -50,6 +50,10 @@ export type AgentCliOpts = {
   runId?: string;
   extraSystemPrompt?: string;
   local?: boolean;
+  /** Enable automatic tool execution loop until no more tool calls. */
+  autoTools?: boolean;
+  /** Maximum tool iterations before stopping (default: 10). */
+  maxToolIterations?: number;
 };
 
 function parseTimeoutSeconds(opts: { cfg: ReturnType<typeof loadConfig>; timeout?: string }) {
@@ -99,7 +103,7 @@ export async function agentViaGatewayCommand(opts: AgentCliOpts, runtime: Runtim
     const knownAgents = listAgentIds(cfg);
     if (!knownAgents.includes(agentId)) {
       throw new Error(
-        `Unknown agent id "${agentIdRaw}". Use "${formatCliCommand("openclaw agents list")}" to see configured agents.`,
+        `Unknown agent id "${agentIdRaw}". Use "${formatCliCommand("openpaw agents list")}" to see configured agents.`,
       );
     }
   }
@@ -177,6 +181,8 @@ export async function agentCliCommand(opts: AgentCliOpts, runtime: RuntimeEnv, d
     ...opts,
     agentId: opts.agent,
     replyAccountId: opts.replyAccount,
+    autoTools: opts.autoTools,
+    maxToolIterations: opts.maxToolIterations,
   };
   if (opts.local === true) {
     return await agentCommand(localOpts, runtime, deps);

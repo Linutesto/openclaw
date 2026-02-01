@@ -1,6 +1,6 @@
 import AppKit
 import OpenClawIPC
-import OpenClawKit
+import OpenPawKit
 import Foundation
 
 actor MacNodeRuntime {
@@ -355,7 +355,7 @@ actor MacNodeRuntime {
 
     private func handleA2UIPush(_ req: BridgeInvokeRequest) async throws -> BridgeInvokeResponse {
         let command = req.command
-        let messages: [OpenClawKit.AnyCodable]
+        let messages: [OpenPawKit.AnyCodable]
         if command == OpenClawCanvasA2UICommand.pushJSONL.rawValue {
             let params = try Self.decodeParams(OpenClawCanvasA2UIPushJSONLParams.self, from: req.paramsJSON)
             messages = try OpenClawCanvasA2UIJSONL.decodeMessagesFromJSONL(params.jsonl)

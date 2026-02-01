@@ -1,6 +1,6 @@
 import AppKit
 import OpenClawIPC
-import OpenClawKit
+import OpenPawKit
 import Foundation
 import WebKit
 
@@ -145,5 +145,5 @@ final class CanvasA2UIActionMessageHandler: NSObject, WKScriptMessageHandler {
         return false
     }
 
-    // Formatting helpers live in OpenClawKit (`OpenClawCanvasA2UIAction`).
+    // Formatting helpers live in OpenPawKit (`OpenClawCanvasA2UIAction`).
 }

@@ -1,0 +1,19 @@
+{
+  "name": "@openpaw/memory-qjson",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "QJSON Fractal Memory integration for OpenPaw",
+  "main": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.34.33"
+  },
+  "devDependencies": {
+    "openpaw": "workspace:*"
+  },
+  "peerDependencies": {
+    "openpaw": "*"
+  }
+}

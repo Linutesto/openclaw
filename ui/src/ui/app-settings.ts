@@ -1,4 +1,4 @@
-import type { OpenClawApp } from "./app";
+import type { OpenPawApp } from "./app";
 import { refreshChat } from "./app-chat";
 import {
   startLogsPolling,
@@ -152,15 +152,15 @@ export function setTheme(host: SettingsHost, next: ThemeMode, context?: ThemeTra
 export async function refreshActiveTab(host: SettingsHost) {
   if (host.tab === "overview") await loadOverview(host);
   if (host.tab === "channels") await loadChannelsTab(host);
-  if (host.tab === "instances") await loadPresence(host as unknown as OpenClawApp);
-  if (host.tab === "sessions") await loadSessions(host as unknown as OpenClawApp);
+  if (host.tab === "instances") await loadPresence(host as unknown as OpenPawApp);
+  if (host.tab === "sessions") await loadSessions(host as unknown as OpenPawApp);
   if (host.tab === "cron") await loadCron(host);
-  if (host.tab === "skills") await loadSkills(host as unknown as OpenClawApp);
+  if (host.tab === "skills") await loadSkills(host as unknown as OpenPawApp);
   if (host.tab === "nodes") {
-    await loadNodes(host as unknown as OpenClawApp);
-    await loadDevices(host as unknown as OpenClawApp);
-    await loadConfig(host as unknown as OpenClawApp);
-    await loadExecApprovals(host as unknown as OpenClawApp);
+    await loadNodes(host as unknown as OpenPawApp);
+    await loadDevices(host as unknown as OpenPawApp);
+    await loadConfig(host as unknown as OpenPawApp);
+    await loadExecApprovals(host as unknown as OpenPawApp);
   }
   if (host.tab === "chat") {
     await refreshChat(host as unknown as Parameters<typeof refreshChat>[0]);
@@ -170,23 +170,23 @@ export async function refreshActiveTab(host: SettingsHost) {
     );
   }
   if (host.tab === "config") {
-    await loadConfigSchema(host as unknown as OpenClawApp);
-    await loadConfig(host as unknown as OpenClawApp);
+    await loadConfigSchema(host as unknown as OpenPawApp);
+    await loadConfig(host as unknown as OpenPawApp);
   }
   if (host.tab === "debug") {
-    await loadDebug(host as unknown as OpenClawApp);
+    await loadDebug(host as unknown as OpenPawApp);
     host.eventLog = host.eventLogBuffer;
   }
   if (host.tab === "logs") {
     host.logsAtBottom = true;
-    await loadLogs(host as unknown as OpenClawApp, { reset: true });
+    await loadLogs(host as unknown as OpenPawApp, { reset: true });
     scheduleLogsScroll(host as unknown as Parameters<typeof scheduleLogsScroll>[0], true);
   }
 }
 
 export function inferBasePath() {
   if (typeof window === "undefined") return "";
-  const configured = window.__OPENCLAW_CONTROL_UI_BASE_PATH__;
+  const configured = window.__OPENPAW_CONTROL_UI_BASE_PATH__;
   if (typeof configured === "string" && configured.trim()) {
     return normalizeBasePath(configured);
   }
@@ -307,26 +307,26 @@ export function syncUrlWithSessionKey(host: SettingsHost, sessionKey: string, re
 
 export async function loadOverview(host: SettingsHost) {
   await Promise.all([
-    loadChannels(host as unknown as OpenClawApp, false),
-    loadPresence(host as unknown as OpenClawApp),
-    loadSessions(host as unknown as OpenClawApp),
-    loadCronStatus(host as unknown as OpenClawApp),
-    loadDebug(host as unknown as OpenClawApp),
+    loadChannels(host as unknown as OpenPawApp, false),
+    loadPresence(host as unknown as OpenPawApp),
+    loadSessions(host as unknown as OpenPawApp),
+    loadCronStatus(host as unknown as OpenPawApp),
+    loadDebug(host as unknown as OpenPawApp),
   ]);
 }
 
 export async function loadChannelsTab(host: SettingsHost) {
   await Promise.all([
-    loadChannels(host as unknown as OpenClawApp, true),
-    loadConfigSchema(host as unknown as OpenClawApp),
-    loadConfig(host as unknown as OpenClawApp),
+    loadChannels(host as unknown as OpenPawApp, true),
+    loadConfigSchema(host as unknown as OpenPawApp),
+    loadConfig(host as unknown as OpenPawApp),
   ]);
 }
 
 export async function loadCron(host: SettingsHost) {
   await Promise.all([
-    loadChannels(host as unknown as OpenClawApp, false),
-    loadCronStatus(host as unknown as OpenClawApp),
-    loadCronJobs(host as unknown as OpenClawApp),
+    loadChannels(host as unknown as OpenPawApp, false),
+    loadCronStatus(host as unknown as OpenPawApp),
+    loadCronJobs(host as unknown as OpenPawApp),
   ]);
 }

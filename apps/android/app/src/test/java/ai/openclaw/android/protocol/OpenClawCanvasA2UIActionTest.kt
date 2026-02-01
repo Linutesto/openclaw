@@ -1,4 +1,4 @@
-package ai.openclaw.android.protocol
+package ai.openpaw.android.protocol
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -42,7 +42,7 @@ class OpenClawCanvasA2UIActionTest {
   fun jsDispatchA2uiStatusIsStable() {
     val js = OpenClawCanvasA2UIAction.jsDispatchA2UIActionStatus(actionId = "a1", ok = true, error = null)
     assertEquals(
-      "window.dispatchEvent(new CustomEvent('openclaw:a2ui-action-status', { detail: { id: \"a1\", ok: true, error: \"\" } }));",
+      "window.dispatchEvent(new CustomEvent('openpaw:a2ui-action-status', { detail: { id: \"a1\", ok: true, error: \"\" } }));",
       js,
     )
   }

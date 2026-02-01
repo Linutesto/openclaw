@@ -9,7 +9,7 @@ import Security
 final class PeekabooBridgeHostCoordinator {
     static let shared = PeekabooBridgeHostCoordinator()
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "PeekabooBridge")
+    private let logger = Logger(subsystem: "ai.openpaw", category: "PeekabooBridge")
 
     private var host: PeekabooBridgeHost?
     private var services: OpenClawPeekabooBridgeServices?
@@ -17,7 +17,7 @@ final class PeekabooBridgeHostCoordinator {
         let fileManager = FileManager.default
         let base = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? fileManager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support")
-        let directory = base.appendingPathComponent("OpenClaw", isDirectory: true)
+        let directory = base.appendingPathComponent("OpenPaw", isDirectory: true)
         return directory.appendingPathComponent(PeekabooBridgeConstants.socketName, isDirectory: false).path
     }
 
@@ -109,7 +109,7 @@ private final class OpenClawPeekabooBridgeServices: PeekabooBridgeServiceProvidi
     let snapshots: any SnapshotManagerProtocol
 
     init() {
-        let logging = LoggingService(subsystem: "ai.openclaw.peekaboo")
+        let logging = LoggingService(subsystem: "ai.openpaw.peekaboo")
         let feedbackClient: any AutomationFeedbackClient = NoopAutomationFeedbackClient()
 
         let snapshots = InMemorySnapshotManager(options: .init(

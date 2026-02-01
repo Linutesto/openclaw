@@ -3,14 +3,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "OpenClawKit",
+    name: "OpenPawKit",
     platforms: [
         .iOS(.v18),
         .macOS(.v15),
     ],
     products: [
         .library(name: "OpenClawProtocol", targets: ["OpenClawProtocol"]),
-        .library(name: "OpenClawKit", targets: ["OpenClawKit"]),
+        .library(name: "OpenPawKit", targets: ["OpenPawKit"]),
         .library(name: "OpenClawChatUI", targets: ["OpenClawChatUI"]),
     ],
     dependencies: [
@@ -25,12 +25,12 @@ let package = Package(
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .target(
-            name: "OpenClawKit",
+            name: "OpenPawKit",
             dependencies: [
                 "OpenClawProtocol",
                 .product(name: "ElevenLabsKit", package: "ElevenLabsKit"),
             ],
-            path: "Sources/OpenClawKit",
+            path: "Sources/OpenPawKit",
             resources: [
                 .process("Resources"),
             ],
@@ -40,7 +40,7 @@ let package = Package(
         .target(
             name: "OpenClawChatUI",
             dependencies: [
-                "OpenClawKit",
+                "OpenPawKit",
                 .product(
                     name: "Textual",
                     package: "textual",
@@ -51,9 +51,9 @@ let package = Package(
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .testTarget(
-            name: "OpenClawKitTests",
-            dependencies: ["OpenClawKit", "OpenClawChatUI"],
-            path: "Tests/OpenClawKitTests",
+            name: "OpenPawKitTests",
+            dependencies: ["OpenPawKit", "OpenClawChatUI"],
+            path: "Tests/OpenPawKitTests",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
                 .enableExperimentalFeature("SwiftTesting"),

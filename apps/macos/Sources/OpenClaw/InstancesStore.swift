@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import OpenClawProtocol
 import Cocoa
 import Foundation
@@ -41,7 +41,7 @@ final class InstancesStore {
     var statusMessage: String?
     var isLoading = false
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "instances")
+    private let logger = Logger(subsystem: "ai.openpaw", category: "instances")
     private var task: Task<Void, Never>?
     private let interval: TimeInterval = 30
     private var eventTask: Task<Void, Never>?

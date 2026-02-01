@@ -1,7 +1,7 @@
 import OpenClawProtocol
 import SwiftUI
 import Testing
-@testable import OpenClaw
+@testable import OpenPaw
 
 private typealias ProtoAnyCodable = OpenClawProtocol.AnyCodable
 

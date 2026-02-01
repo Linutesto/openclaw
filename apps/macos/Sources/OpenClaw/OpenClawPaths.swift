@@ -14,8 +14,8 @@ enum OpenClawEnv {
 }
 
 enum OpenClawPaths {
-    private static let configPathEnv = ["OPENCLAW_CONFIG_PATH"]
-    private static let stateDirEnv = ["OPENCLAW_STATE_DIR"]
+    private static let configPathEnv = ["OPENPAW_CONFIG_PATH"]
+    private static let stateDirEnv = ["OPENPAW_STATE_DIR"]
 
     static var stateDirURL: URL {
         for key in self.stateDirEnv {
@@ -24,13 +24,13 @@ enum OpenClawPaths {
             }
         }
         let home = FileManager().homeDirectoryForCurrentUser
-        let preferred = home.appendingPathComponent(".openclaw", isDirectory: true)
+        let preferred = home.appendingPathComponent(".openpaw", isDirectory: true)
         return preferred
     }
 
     private static func resolveConfigCandidate(in dir: URL) -> URL? {
         let candidates = [
-            dir.appendingPathComponent("openclaw.json"),
+            dir.appendingPathComponent("openpaw.json"),
         ]
         return candidates.first(where: { FileManager().fileExists(atPath: $0.path) })
     }
@@ -45,7 +45,7 @@ enum OpenClawPaths {
         if let existing = self.resolveConfigCandidate(in: stateDir) {
             return existing
         }
-        return stateDir.appendingPathComponent("openclaw.json")
+        return stateDir.appendingPathComponent("openpaw.json")
     }
 
     static var workspaceURL: URL {

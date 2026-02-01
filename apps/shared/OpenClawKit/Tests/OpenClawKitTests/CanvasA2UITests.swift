@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import Testing
 
 @Suite struct CanvasA2UITests {

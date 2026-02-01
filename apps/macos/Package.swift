@@ -1,18 +1,18 @@
 // swift-tools-version: 6.2
-// Package manifest for the OpenClaw macOS companion (menu bar app + IPC library).
+// Package manifest for the OpenPaw macOS companion (menu bar app + IPC library).
 
 import PackageDescription
 
 let package = Package(
-    name: "OpenClaw",
+    name: "OpenPaw",
     platforms: [
         .macOS(.v15),
     ],
     products: [
         .library(name: "OpenClawIPC", targets: ["OpenClawIPC"]),
         .library(name: "OpenClawDiscovery", targets: ["OpenClawDiscovery"]),
-        .executable(name: "OpenClaw", targets: ["OpenClaw"]),
-        .executable(name: "openclaw-mac", targets: ["OpenClawMacCLI"]),
+        .executable(name: "OpenPaw", targets: ["OpenPaw"]),
+        .executable(name: "openpaw-mac", targets: ["OpenClawMacCLI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/orchetect/MenuBarExtraAccess", exact: "1.2.2"),
@@ -20,7 +20,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-log.git", from: "1.8.0"),
         .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.8.1"),
         .package(url: "https://github.com/steipete/Peekaboo.git", branch: "main"),
-        .package(path: "../shared/OpenClawKit"),
+        .package(path: "../shared/OpenPawKit"),
         .package(path: "../../Swabble"),
     ],
     targets: [
@@ -33,20 +33,20 @@ let package = Package(
         .target(
             name: "OpenClawDiscovery",
             dependencies: [
-                .product(name: "OpenClawKit", package: "OpenClawKit"),
+                .product(name: "OpenPawKit", package: "OpenPawKit"),
             ],
             path: "Sources/OpenClawDiscovery",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .executableTarget(
-            name: "OpenClaw",
+            name: "OpenPaw",
             dependencies: [
                 "OpenClawIPC",
                 "OpenClawDiscovery",
-                .product(name: "OpenClawKit", package: "OpenClawKit"),
-                .product(name: "OpenClawChatUI", package: "OpenClawKit"),
-                .product(name: "OpenClawProtocol", package: "OpenClawKit"),
+                .product(name: "OpenPawKit", package: "OpenPawKit"),
+                .product(name: "OpenClawChatUI", package: "OpenPawKit"),
+                .product(name: "OpenClawProtocol", package: "OpenPawKit"),
                 .product(name: "SwabbleKit", package: "swabble"),
                 .product(name: "MenuBarExtraAccess", package: "MenuBarExtraAccess"),
                 .product(name: "Subprocess", package: "swift-subprocess"),
@@ -59,7 +59,7 @@ let package = Package(
                 "Resources/Info.plist",
             ],
             resources: [
-                .copy("Resources/OpenClaw.icns"),
+                .copy("Resources/OpenPaw.icns"),
                 .copy("Resources/DeviceModels"),
             ],
             swiftSettings: [
@@ -69,8 +69,8 @@ let package = Package(
             name: "OpenClawMacCLI",
             dependencies: [
                 "OpenClawDiscovery",
-                .product(name: "OpenClawKit", package: "OpenClawKit"),
-                .product(name: "OpenClawProtocol", package: "OpenClawKit"),
+                .product(name: "OpenPawKit", package: "OpenPawKit"),
+                .product(name: "OpenClawProtocol", package: "OpenPawKit"),
             ],
             path: "Sources/OpenClawMacCLI",
             swiftSettings: [
@@ -80,9 +80,9 @@ let package = Package(
             name: "OpenClawIPCTests",
             dependencies: [
                 "OpenClawIPC",
-                "OpenClaw",
+                "OpenPaw",
                 "OpenClawDiscovery",
-                .product(name: "OpenClawProtocol", package: "OpenClawKit"),
+                .product(name: "OpenClawProtocol", package: "OpenPawKit"),
                 .product(name: "SwabbleKit", package: "swabble"),
             ],
             swiftSettings: [

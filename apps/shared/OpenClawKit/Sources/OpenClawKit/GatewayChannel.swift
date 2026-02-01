@@ -109,7 +109,7 @@ private enum ConnectChallengeError: Error {
 }
 
 public actor GatewayChannelActor {
-    private let logger = Logger(subsystem: "ai.openclaw", category: "gateway")
+    private let logger = Logger(subsystem: "ai.openpaw", category: "gateway")
     private var task: WebSocketTaskBox?
     private var pending: [String: CheckedContinuation<GatewayFrame, Error>] = [:]
     private var connected = false
@@ -268,7 +268,7 @@ public actor GatewayChannelActor {
             caps: [],
             commands: [],
             permissions: [:],
-            clientId: "openclaw-macos",
+            clientId: "openpaw-macos",
             clientMode: "ui",
             clientDisplayName: InstanceIdentity.displayName)
         let clientDisplayName = options.clientDisplayName ?? InstanceIdentity.displayName

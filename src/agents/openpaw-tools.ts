@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { OpenPawConfig } from "../config/config.js";
 import type { GatewayMessageChannel } from "../utils/message-channel.js";
 import type { AnyAgentTool } from "./tools/common.js";
 import { resolvePluginTools } from "../plugins/tools.js";
@@ -17,9 +17,14 @@ import { createSessionsListTool } from "./tools/sessions-list-tool.js";
 import { createSessionsSendTool } from "./tools/sessions-send-tool.js";
 import { createSessionsSpawnTool } from "./tools/sessions-spawn-tool.js";
 import { createTtsTool } from "./tools/tts-tool.js";
-import { createWebFetchTool, createWebSearchTool } from "./tools/web-tools.js";
+import {
+  createWebFetchTool,
+  createWebSearchTool,
+  createSearxngSearchTool,
+  createWebDiscoverTool,
+} from "./tools/web-tools.js";
 
-export function createOpenClawTools(options?: {
+export function createOpenPawTools(options?: {
   sandboxBrowserBridgeUrl?: string;
   allowHostBrowserControl?: boolean;
   agentSessionKey?: string;
@@ -39,7 +44,7 @@ export function createOpenClawTools(options?: {
   sandboxRoot?: string;
   workspaceDir?: string;
   sandboxed?: boolean;
-  config?: OpenClawConfig;
+  config?: OpenPawConfig;
   pluginToolAllowlist?: string[];
   /** Current channel ID for auto-threading (Slack). */
   currentChannelId?: string;
@@ -67,6 +72,14 @@ export function createOpenClawTools(options?: {
     sandboxed: options?.sandboxed,
   });
   const webFetchTool = createWebFetchTool({
+    config: options?.config,
+    sandboxed: options?.sandboxed,
+  });
+  const searxngSearchTool = createSearxngSearchTool({
+    config: options?.config,
+    sandboxed: options?.sandboxed,
+  });
+  const webDiscoverTool = createWebDiscoverTool({
     config: options?.config,
     sandboxed: options?.sandboxed,
   });
@@ -136,6 +149,8 @@ export function createOpenClawTools(options?: {
     }),
     ...(webSearchTool ? [webSearchTool] : []),
     ...(webFetchTool ? [webFetchTool] : []),
+    ...(searxngSearchTool ? [searxngSearchTool] : []),
+    ...(webDiscoverTool ? [webDiscoverTool] : []),
     ...(imageTool ? [imageTool] : []),
   ];
 

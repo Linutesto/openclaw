@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { OpenPawConfig } from "../../config/config.js";
 import type { AnyAgentTool } from "./common.js";
 import { resolveAgentDir } from "../../agents/agent-scope.js";
 import {
@@ -66,7 +66,7 @@ function formatApiKeySnippet(apiKey: string): string {
 
 function resolveModelAuthLabel(params: {
   provider?: string;
-  cfg: OpenClawConfig;
+  cfg: OpenPawConfig;
   sessionEntry?: SessionEntry;
   agentDir?: string;
 }): string | undefined {
@@ -164,7 +164,7 @@ function resolveSessionEntry(params: {
 }
 
 function resolveSessionKeyFromSessionId(params: {
-  cfg: OpenClawConfig;
+  cfg: OpenPawConfig;
   sessionId: string;
   agentId?: string;
 }): string | null {
@@ -186,7 +186,7 @@ function resolveSessionKeyFromSessionId(params: {
 }
 
 async function resolveModelOverride(params: {
-  cfg: OpenClawConfig;
+  cfg: OpenPawConfig;
   raw: string;
   sessionEntry?: SessionEntry;
   agentId: string;
@@ -250,7 +250,7 @@ async function resolveModelOverride(params: {
 
 export function createSessionStatusTool(opts?: {
   agentSessionKey?: string;
-  config?: OpenClawConfig;
+  config?: OpenPawConfig;
 }): AnyAgentTool {
   return {
     label: "Session Status",

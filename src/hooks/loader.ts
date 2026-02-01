@@ -7,7 +7,7 @@
 
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OpenPawConfig } from "../config/config.js";
 import type { InternalHookHandler } from "./internal-hooks.js";
 import { resolveHookConfig } from "./config.js";
 import { shouldIncludeHook } from "./config.js";
@@ -21,7 +21,7 @@ import { loadWorkspaceHookEntries } from "./workspace.js";
  * 1. Directory-based discovery (bundled, managed, workspace)
  * 2. Legacy config handlers (backwards compatibility)
  *
- * @param cfg - OpenClaw configuration
+ * @param cfg - OpenPaw configuration
  * @param workspaceDir - Workspace directory for hook discovery
  * @returns Number of handlers successfully loaded
  *
@@ -33,10 +33,7 @@ import { loadWorkspaceHookEntries } from "./workspace.js";
  * console.log(`Loaded ${count} hook handlers`);
  * ```
  */
-export async function loadInternalHooks(
-  cfg: OpenClawConfig,
-  workspaceDir: string,
-): Promise<number> {
+export async function loadInternalHooks(cfg: OpenPawConfig, workspaceDir: string): Promise<number> {
   // Check if hooks are enabled
   if (!cfg.hooks?.internal?.enabled) {
     return 0;

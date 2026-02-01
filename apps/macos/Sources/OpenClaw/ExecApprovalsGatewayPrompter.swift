@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import OpenClawProtocol
 import CoreGraphics
 import Foundation
@@ -8,7 +8,7 @@ import OSLog
 final class ExecApprovalsGatewayPrompter {
     static let shared = ExecApprovalsGatewayPrompter()
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "exec-approvals.gateway")
+    private let logger = Logger(subsystem: "ai.openpaw", category: "exec-approvals.gateway")
     private var task: Task<Void, Never>?
 
     struct GatewayApprovalRequest: Codable, Sendable {

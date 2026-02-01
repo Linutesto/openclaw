@@ -1,5 +1,5 @@
 import AppKit
-import OpenClawKit
+import OpenPawKit
 import CryptoKit
 import Darwin
 import Foundation
@@ -589,7 +589,7 @@ private enum ExecHostExecutor {
 }
 
 private final class ExecApprovalsSocketServer: @unchecked Sendable {
-    private let logger = Logger(subsystem: "ai.openclaw", category: "exec-approvals.socket")
+    private let logger = Logger(subsystem: "ai.openpaw", category: "exec-approvals.socket")
     private let socketPath: String
     private let token: String
     private let onPrompt: @Sendable (ExecApprovalPromptRequest) async -> ExecApprovalDecision

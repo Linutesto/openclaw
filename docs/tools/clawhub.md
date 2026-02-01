@@ -9,13 +9,13 @@ title: "ClawHub"
 
 # ClawHub
 
-ClawHub is the **public skill registry for OpenClaw**. It is a free service: all skills are public, open, and visible to everyone for sharing and reuse. A skill is just a folder with a `SKILL.md` file (plus supporting text files). You can browse skills in the web app or use the CLI to search, install, update, and publish skills.
+ClawHub is the **public skill registry for OpenPaw**. It is a free service: all skills are public, open, and visible to everyone for sharing and reuse. A skill is just a folder with a `SKILL.md` file (plus supporting text files). You can browse skills in the web app or use the CLI to search, install, update, and publish skills.
 
 Site: [clawhub.com](https://clawhub.com)
 
 ## Who this is for (beginner-friendly)
 
-If you want to add new capabilities to your OpenClaw agent, ClawHub is the easiest way to find and install skills. You do not need to know how the backend works. You can:
+If you want to add new capabilities to your OpenPaw agent, ClawHub is the easiest way to find and install skills. You do not need to know how the backend works. You can:
 
 - Search for skills by plain language.
 - Install a skill into your workspace.
@@ -29,7 +29,7 @@ If you want to add new capabilities to your OpenClaw agent, ClawHub is the easie
    - `clawhub search "calendar"`
 3. Install a skill:
    - `clawhub install <skill-slug>`
-4. Start a new OpenClaw session so it picks up the new skill.
+4. Start a new OpenPaw session so it picks up the new skill.
 
 ## Install the CLI
 
@@ -43,9 +43,9 @@ npm i -g clawhub
 pnpm add -g clawhub
 ```
 
-## How it fits into OpenClaw
+## How it fits into OpenPaw
 
-By default, the CLI installs skills into `./skills` under your current working directory. If a OpenClaw workspace is configured, `clawhub` falls back to that workspace unless you override `--workdir` (or `CLAWHUB_WORKDIR`). OpenClaw loads workspace skills from `<workspace>/skills` and will pick them up in the **next** session. If you already use `~/.openclaw/skills` or bundled skills, workspace skills take precedence.
+By default, the CLI installs skills into `./skills` under your current working directory. If a OpenPaw workspace is configured, `clawhub` falls back to that workspace unless you override `--workdir` (or `CLAWHUB_WORKDIR`). OpenPaw loads workspace skills from `<workspace>/skills` and will pick them up in the **next** session. If you already use `~/.openpaw/skills` or bundled skills, workspace skills take precedence.
 
 For more detail on how skills are loaded, shared, and gated, see
 [Skills](/tools/skills).
@@ -64,7 +64,7 @@ For more detail on how skills are loaded, shared, and gated, see
 
 Global options (apply to all commands):
 
-- `--workdir <dir>`: Working directory (default: current dir; falls back to OpenClaw workspace).
+- `--workdir <dir>`: Working directory (default: current dir; falls back to OpenPaw workspace).
 - `--dir <dir>`: Skills directory, relative to workdir (default: `skills`).
 - `--site <url>`: Site base URL (browser login).
 - `--registry <url>`: Registry API base URL.
@@ -178,7 +178,7 @@ Updates compare the local skill contents to registry versions using a content ha
 
 ### Sync scanning and fallback roots
 
-`clawhub sync` scans your current workdir first. If no skills are found, it falls back to known legacy locations (for example `~/openclaw/skills` and `~/.openclaw/skills`). This is designed to find older skill installs without extra flags.
+`clawhub sync` scans your current workdir first. If no skills are found, it falls back to known legacy locations (for example `~/openpaw/skills` and `~/.openpaw/skills`). This is designed to find older skill installs without extra flags.
 
 ### Storage and lockfile
 

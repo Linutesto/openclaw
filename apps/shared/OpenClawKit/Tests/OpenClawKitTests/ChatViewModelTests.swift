@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import Foundation
 import Testing
 @testable import OpenClawChatUI

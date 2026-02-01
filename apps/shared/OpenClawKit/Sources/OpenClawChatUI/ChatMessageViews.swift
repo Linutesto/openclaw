@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import Foundation
 import SwiftUI
 
@@ -459,7 +459,7 @@ struct ChatTypingIndicatorBubble: View {
         HStack(spacing: 10) {
             TypingDots()
             if self.style == .standard {
-                Text("OpenClaw is thinking…")
+                Text("OpenPaw is thinking…")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 Spacer()

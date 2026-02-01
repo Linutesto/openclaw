@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import Foundation
 
 // NOTE: keep this file lightweight; decode must be resilient to varying transcript formats.

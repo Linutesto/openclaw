@@ -1,4 +1,4 @@
-package ai.openclaw.android.protocol
+package ai.openpaw.android.protocol
 
 enum class OpenClawCapability(val rawValue: String) {
   Canvas("canvas"),

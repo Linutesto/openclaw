@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import Foundation
 
 struct WideAreaGatewayBeacon: Sendable, Equatable {

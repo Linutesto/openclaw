@@ -1,5 +1,5 @@
 import AVFoundation
-import OpenClawKit
+import OpenPawKit
 import Foundation
 
 actor CameraController {
@@ -161,9 +161,9 @@ actor CameraController {
         await Self.warmUpCaptureSession()
 
         let movURL = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-camera-\(UUID().uuidString).mov")
+            .appendingPathComponent("openpaw-camera-\(UUID().uuidString).mov")
         let mp4URL = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-camera-\(UUID().uuidString).mp4")
+            .appendingPathComponent("openpaw-camera-\(UUID().uuidString).mp4")
 
         defer {
             try? FileManager().removeItem(at: movURL)

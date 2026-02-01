@@ -34,6 +34,10 @@ export type AgentCommandOpts = {
   clientTools?: ClientToolDefinition[];
   /** Agent id override (must exist in config). */
   agentId?: string;
+  /** Enable automatic tool execution loop until no more tool calls. */
+  autoTools?: boolean;
+  /** Maximum tool iterations before stopping (default: 10). */
+  maxToolIterations?: number;
   to?: string;
   sessionId?: string;
   sessionKey?: string;

@@ -1,15 +1,15 @@
 import Foundation
 
 enum CommandResolver {
-    private static let projectRootDefaultsKey = "openclaw.gatewayProjectRootPath"
-    private static let helperName = "openclaw"
+    private static let projectRootDefaultsKey = "openpaw.gatewayProjectRootPath"
+    private static let helperName = "openpaw"
 
     static func gatewayEntrypoint(in root: URL) -> String? {
         let distEntry = root.appendingPathComponent("dist/index.js").path
         if FileManager().isReadableFile(atPath: distEntry) { return distEntry }
-        let openclawEntry = root.appendingPathComponent("openclaw.mjs").path
+        let openclawEntry = root.appendingPathComponent("openpaw.mjs").path
         if FileManager().isReadableFile(atPath: openclawEntry) { return openclawEntry }
-        let binEntry = root.appendingPathComponent("bin/openclaw.js").path
+        let binEntry = root.appendingPathComponent("bin/openpaw.js").path
         if FileManager().isReadableFile(atPath: binEntry) { return binEntry }
         return nil
     }
@@ -38,9 +38,9 @@ enum CommandResolver {
 
     static func errorCommand(with message: String) -> [String] {
         let script = """
-        cat <<'__OPENCLAW_ERR__' >&2
+        cat <<'__OPENPAW_ERR__' >&2
         \(message)
-        __OPENCLAW_ERR__
+        __OPENPAW_ERR__
         exit 1
         """
         return ["/bin/sh", "-c", script]
@@ -54,7 +54,7 @@ enum CommandResolver {
             return url
         }
         let fallback = FileManager().homeDirectoryForCurrentUser
-            .appendingPathComponent("Projects/openclaw")
+            .appendingPathComponent("Projects/openpaw")
         if FileManager().fileExists(atPath: fallback.path) {
             return fallback
         }
@@ -101,7 +101,7 @@ enum CommandResolver {
 
     private static func openclawManagedPaths(home: URL) -> [String] {
         let bases = [
-            home.appendingPathComponent(".openclaw"),
+            home.appendingPathComponent(".openpaw"),
         ]
         var paths: [String] = []
         for base in bases {
@@ -210,8 +210,8 @@ enum CommandResolver {
     static func nodeCliPath() -> String? {
         let root = self.projectRoot()
         let candidates = [
-            root.appendingPathComponent("openclaw.mjs").path,
-            root.appendingPathComponent("bin/openclaw.js").path,
+            root.appendingPathComponent("openpaw.mjs").path,
+            root.appendingPathComponent("bin/openpaw.js").path,
         ]
         for candidate in candidates where FileManager().isReadableFile(atPath: candidate) {
             return candidate
@@ -264,14 +264,14 @@ enum CommandResolver {
             }
             if let pnpm = self.findExecutable(named: "pnpm", searchPaths: searchPaths) {
                 // Use --silent to avoid pnpm lifecycle banners that would corrupt JSON outputs.
-                return [pnpm, "--silent", "openclaw", subcommand] + extraArgs
+                return [pnpm, "--silent", "openpaw", subcommand] + extraArgs
             }
             if let openclawPath = self.openclawExecutable(searchPaths: searchPaths) {
                 return [openclawPath, subcommand] + extraArgs
             }
 
             let missingEntry = """
-            openclaw entrypoint missing (looked for dist/index.js or openclaw.mjs); run pnpm build.
+            openpaw entrypoint missing (looked for dist/index.js or openpaw.mjs); run pnpm build.
             """
             return self.errorCommand(with: missingEntry)
 
@@ -301,7 +301,7 @@ enum CommandResolver {
         guard !settings.target.isEmpty else { return nil }
         guard let parsed = self.parseSSHTarget(settings.target) else { return nil }
 
-        // Run the real openclaw CLI on the remote host.
+        // Run the real openpaw CLI on the remote host.
         let exportedPath = [
             "/opt/homebrew/bin",
             "/usr/local/bin",
@@ -318,7 +318,7 @@ enum CommandResolver {
 
         let projectSection = if userPRJ.isEmpty {
             """
-            DEFAULT_PRJ="$HOME/Projects/openclaw"
+            DEFAULT_PRJ="$HOME/Projects/openpaw"
             if [ -d "$DEFAULT_PRJ" ]; then
               PRJ="$DEFAULT_PRJ"
               cd "$PRJ" || { echo "Project root not found: $PRJ"; exit 127; }
@@ -357,9 +357,9 @@ enum CommandResolver {
         CLI="";
         \(cliSection)
         \(projectSection)
-        if command -v openclaw >/dev/null 2>&1; then
-          CLI="$(command -v openclaw)"
-          openclaw \(quotedArgs);
+        if command -v openpaw >/dev/null 2>&1; then
+          CLI="$(command -v openpaw)"
+          openpaw \(quotedArgs);
         elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/dist/index.js" ]; then
           if command -v node >/dev/null 2>&1; then
             CLI="node $PRJ/dist/index.js"
@@ -367,25 +367,25 @@ enum CommandResolver {
           else
             echo "Node >=22 required on remote host"; exit 127;
           fi
-        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/openclaw.mjs" ]; then
+        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/openpaw.mjs" ]; then
           if command -v node >/dev/null 2>&1; then
-            CLI="node $PRJ/openclaw.mjs"
-            node "$PRJ/openclaw.mjs" \(quotedArgs);
+            CLI="node $PRJ/openpaw.mjs"
+            node "$PRJ/openpaw.mjs" \(quotedArgs);
           else
             echo "Node >=22 required on remote host"; exit 127;
           fi
-        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/bin/openclaw.js" ]; then
+        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/bin/openpaw.js" ]; then
           if command -v node >/dev/null 2>&1; then
-            CLI="node $PRJ/bin/openclaw.js"
-            node "$PRJ/bin/openclaw.js" \(quotedArgs);
+            CLI="node $PRJ/bin/openpaw.js"
+            node "$PRJ/bin/openpaw.js" \(quotedArgs);
           else
             echo "Node >=22 required on remote host"; exit 127;
           fi
         elif command -v pnpm >/dev/null 2>&1; then
-          CLI="pnpm --silent openclaw"
-          pnpm --silent openclaw \(quotedArgs);
+          CLI="pnpm --silent openpaw"
+          pnpm --silent openpaw \(quotedArgs);
         else
-          echo "openclaw CLI missing on remote host"; exit 127;
+          echo "openpaw CLI missing on remote host"; exit 127;
         fi
         """
         let options: [String] = [

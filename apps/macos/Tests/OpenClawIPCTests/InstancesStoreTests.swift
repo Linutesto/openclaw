@@ -1,6 +1,6 @@
 import OpenClawProtocol
 import Testing
-@testable import OpenClaw
+@testable import OpenPaw
 
 @Suite struct InstancesStoreTests {
     @Test

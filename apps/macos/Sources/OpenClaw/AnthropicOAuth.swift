@@ -18,7 +18,7 @@ enum AnthropicAuthMode: Equatable {
 
     var shortLabel: String {
         switch self {
-        case .oauthFile: "OAuth (OpenClaw token file)"
+        case .oauthFile: "OAuth (OpenPaw token file)"
         case .oauthEnv: "OAuth (env var)"
         case .apiKeyEnv: "API key (env var)"
         case .missing: "Missing credentials"
@@ -58,7 +58,7 @@ enum AnthropicAuthResolver {
 }
 
 enum AnthropicOAuth {
-    private static let logger = Logger(subsystem: "ai.openclaw", category: "anthropic-oauth")
+    private static let logger = Logger(subsystem: "ai.openpaw", category: "anthropic-oauth")
 
     private static let clientId = "9d1c250a-e61b-44d9-88ed-5944d1962f5e"
     private static let authorizeURL = URL(string: "https://claude.ai/oauth/authorize")!
@@ -197,7 +197,7 @@ enum AnthropicOAuth {
 enum OpenClawOAuthStore {
     static let oauthFilename = "oauth.json"
     private static let providerKey = "anthropic"
-    private static let openclawOAuthDirEnv = "OPENCLAW_OAUTH_DIR"
+    private static let openclawOAuthDirEnv = "OPENPAW_OAUTH_DIR"
     private static let legacyPiDirEnv = "PI_CODING_AGENT_DIR"
 
     enum AnthropicOAuthStatus: Equatable {
@@ -215,12 +215,12 @@ enum OpenClawOAuthStore {
 
         var shortDescription: String {
             switch self {
-            case .missingFile: "OpenClaw OAuth token file not found"
-            case .unreadableFile: "OpenClaw OAuth token file not readable"
-            case .invalidJSON: "OpenClaw OAuth token file invalid"
-            case .missingProviderEntry: "No Anthropic entry in OpenClaw OAuth token file"
+            case .missingFile: "OpenPaw OAuth token file not found"
+            case .unreadableFile: "OpenPaw OAuth token file not readable"
+            case .invalidJSON: "OpenPaw OAuth token file invalid"
+            case .missingProviderEntry: "No Anthropic entry in OpenPaw OAuth token file"
             case .missingTokens: "Anthropic entry missing tokens"
-            case .connected: "OpenClaw OAuth credentials found"
+            case .connected: "OpenPaw OAuth credentials found"
             }
         }
     }
@@ -234,7 +234,7 @@ enum OpenClawOAuthStore {
             return URL(fileURLWithPath: expanded, isDirectory: true)
         }
         let home = FileManager().homeDirectoryForCurrentUser
-        let preferred = home.appendingPathComponent(".openclaw", isDirectory: true)
+        let preferred = home.appendingPathComponent(".openpaw", isDirectory: true)
             .appendingPathComponent("credentials", isDirectory: true)
         return preferred
     }

@@ -1,5 +1,5 @@
 import OpenClawIPC
-import OpenClawKit
+import OpenPawKit
 import CoreLocation
 import SwiftUI
 
@@ -12,7 +12,7 @@ struct PermissionsSettings: View {
         VStack(alignment: .leading, spacing: 14) {
             SystemRunSettingsView()
 
-            Text("Allow these so OpenClaw can notify and capture when needed.")
+            Text("Allow these so OpenPaw can notify and capture when needed.")
                 .padding(.top, 4)
 
             PermissionStatusList(status: self.status, refresh: self.refresh)

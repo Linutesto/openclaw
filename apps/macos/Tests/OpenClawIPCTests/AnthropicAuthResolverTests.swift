@@ -1,13 +1,13 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import OpenPaw
 
 @Suite
 struct AnthropicAuthResolverTests {
     @Test
     func prefersOAuthFileOverEnv() throws {
         let dir = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-oauth-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("openpaw-oauth-\(UUID().uuidString)", isDirectory: true)
         try FileManager().createDirectory(at: dir, withIntermediateDirectories: true)
         let oauthFile = dir.appendingPathComponent("oauth.json")
         let payload = [

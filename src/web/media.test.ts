@@ -11,7 +11,7 @@ const tmpFiles: string[] = [];
 async function writeTempFile(buffer: Buffer, ext: string): Promise<string> {
   const file = path.join(
     os.tmpdir(),
-    `openclaw-media-${Date.now()}-${Math.random().toString(16).slice(2)}${ext}`,
+    `openpaw-media-${Date.now()}-${Math.random().toString(16).slice(2)}${ext}`,
   );
   tmpFiles.push(file);
   await fs.writeFile(file, buffer);

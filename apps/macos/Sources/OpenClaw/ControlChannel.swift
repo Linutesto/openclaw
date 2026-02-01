@@ -1,4 +1,4 @@
-import OpenClawKit
+import OpenPawKit
 import OpenClawProtocol
 import Foundation
 import Observation
@@ -76,7 +76,7 @@ final class ControlChannel {
     private(set) var lastPingMs: Double?
     private(set) var authSourceLabel: String?
 
-    private let logger = Logger(subsystem: "ai.openclaw", category: "control")
+    private let logger = Logger(subsystem: "ai.openpaw", category: "control")
 
     private var eventTask: Task<Void, Never>?
     private var recoveryTask: Task<Void, Never>?
@@ -163,8 +163,8 @@ final class ControlChannel {
         timeoutMs: Double? = nil) async throws -> Data
     {
         do {
-            let rawParams = params?.reduce(into: [String: OpenClawKit.AnyCodable]()) {
-                $0[$1.key] = OpenClawKit.AnyCodable($1.value.base)
+            let rawParams = params?.reduce(into: [String: OpenPawKit.AnyCodable]()) {
+                $0[$1.key] = OpenPawKit.AnyCodable($1.value.base)
             }
             let data = try await GatewayConnection.shared.request(
                 method: method,
@@ -404,7 +404,7 @@ final class ControlChannel {
         if let dict = value.value as? [String: OpenClawProtocol.AnyCodable] {
             return dict
         }
-        if let dict = value.value as? [String: OpenClawKit.AnyCodable],
+        if let dict = value.value as? [String: OpenPawKit.AnyCodable],
            let data = try? JSONEncoder().encode(dict),
            let decoded = try? JSONDecoder().decode([String: OpenClawProtocol.AnyCodable].self, from: data)
         {
@@ -420,6 +420,6 @@ final class ControlChannel {
 }
 
 extension Notification.Name {
-    static let controlHeartbeat = Notification.Name("openclaw.control.heartbeat")
-    static let controlAgentEvent = Notification.Name("openclaw.control.agent")
+    static let controlHeartbeat = Notification.Name("openpaw.control.heartbeat")
+    static let controlAgentEvent = Notification.Name("openpaw.control.agent")
 }

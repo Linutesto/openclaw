@@ -1,17 +1,17 @@
 import Foundation
 import Testing
-@testable import OpenClaw
+@testable import OpenPaw
 
 @Suite(.serialized)
 struct OpenClawConfigFileTests {
     @Test
     func configPathRespectsEnvOverride() async {
         let override = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-config-\(UUID().uuidString)")
-            .appendingPathComponent("openclaw.json")
+            .appendingPathComponent("openpaw-config-\(UUID().uuidString)")
+            .appendingPathComponent("openpaw.json")
             .path
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
+        await TestIsolation.withEnvValues(["OPENPAW_CONFIG_PATH": override]) {
             #expect(OpenClawConfigFile.url().path == override)
         }
     }
@@ -20,11 +20,11 @@ struct OpenClawConfigFileTests {
     @Test
     func remoteGatewayPortParsesAndMatchesHost() async {
         let override = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-config-\(UUID().uuidString)")
-            .appendingPathComponent("openclaw.json")
+            .appendingPathComponent("openpaw-config-\(UUID().uuidString)")
+            .appendingPathComponent("openpaw.json")
             .path
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
+        await TestIsolation.withEnvValues(["OPENPAW_CONFIG_PATH": override]) {
             OpenClawConfigFile.saveDict([
                 "gateway": [
                     "remote": [
@@ -43,11 +43,11 @@ struct OpenClawConfigFileTests {
     @Test
     func setRemoteGatewayUrlPreservesScheme() async {
         let override = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-config-\(UUID().uuidString)")
-            .appendingPathComponent("openclaw.json")
+            .appendingPathComponent("openpaw-config-\(UUID().uuidString)")
+            .appendingPathComponent("openpaw.json")
             .path
 
-        await TestIsolation.withEnvValues(["OPENCLAW_CONFIG_PATH": override]) {
+        await TestIsolation.withEnvValues(["OPENPAW_CONFIG_PATH": override]) {
             OpenClawConfigFile.saveDict([
                 "gateway": [
                     "remote": [
@@ -65,15 +65,15 @@ struct OpenClawConfigFileTests {
     @Test
     func stateDirOverrideSetsConfigPath() async {
         let dir = FileManager().temporaryDirectory
-            .appendingPathComponent("openclaw-state-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("openpaw-state-\(UUID().uuidString)", isDirectory: true)
             .path
 
         await TestIsolation.withEnvValues([
-            "OPENCLAW_CONFIG_PATH": nil,
-            "OPENCLAW_STATE_DIR": dir,
+            "OPENPAW_CONFIG_PATH": nil,
+            "OPENPAW_STATE_DIR": dir,
         ]) {
             #expect(OpenClawConfigFile.stateDirURL().path == dir)
-            #expect(OpenClawConfigFile.url().path == "\(dir)/openclaw.json")
+            #expect(OpenClawConfigFile.url().path == "\(dir)/openpaw.json")
         }
     }
 }

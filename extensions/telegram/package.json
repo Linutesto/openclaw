@@ -1,12 +1,12 @@
 {
-  "name": "@openclaw/telegram",
+  "name": "@openpaw/telegram",
   "version": "2026.1.30",
-  "description": "OpenClaw Telegram channel plugin",
+  "description": "OpenPaw Telegram channel plugin",
   "type": "module",
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "openpaw": "workspace:*"
   },
-  "openclaw": {
+  "openpaw": {
     "extensions": [
       "./index.ts"
     ]

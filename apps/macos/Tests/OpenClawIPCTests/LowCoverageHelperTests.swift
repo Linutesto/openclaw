@@ -3,7 +3,7 @@ import OpenClawProtocol
 import Foundation
 import Testing
 
-@testable import OpenClaw
+@testable import OpenPaw
 
 @Suite(.serialized)
 struct LowCoverageHelperTests {

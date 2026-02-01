@@ -1,6 +1,6 @@
 import AppKit
 import OpenClawIPC
-import OpenClawKit
+import OpenPawKit
 import Foundation
 import WebKit
 
@@ -95,7 +95,7 @@ final class CanvasWindowController: NSWindowController, WKNavigationDelegate, NS
                 // context resolution (data model path lookups, surface detection, etc.).
                 const hasBundledA2UIHost =
                   !!globalThis.openclawA2UI ||
-                  !!document.querySelector('openclaw-a2ui-host');
+                  !!document.querySelector('openpaw-a2ui-host');
                 if (hasBundledA2UIHost && handler?.postMessage) return;
 
                 // Otherwise, forward directly when possible.
@@ -121,7 +121,7 @@ final class CanvasWindowController: NSWindowController, WKNavigationDelegate, NS
                 params.set('deliver', 'false');
                 params.set('channel', 'last');
                 params.set('key', deepLinkKey);
-                location.href = 'openclaw://agent?' + params.toString();
+                location.href = 'openpaw://agent?' + params.toString();
               } catch {}
             }, true);
           } catch {}
@@ -346,7 +346,7 @@ final class CanvasWindowController: NSWindowController, WKNavigationDelegate, NS
             path = outPath
         } else {
             let ts = Int(Date().timeIntervalSince1970)
-            path = "/tmp/openclaw-canvas-\(CanvasWindowController.sanitizeSessionKey(self.sessionKey))-\(ts).png"
+            path = "/tmp/openpaw-canvas-\(CanvasWindowController.sanitizeSessionKey(self.sessionKey))-\(ts).png"
         }
 
         try png.write(to: URL(fileURLWithPath: path), options: [.atomic])
