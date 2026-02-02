@@ -134,6 +134,8 @@ export type AgentDefaultsConfig = {
   memorySearch?: MemorySearchConfig;
   /** Default thinking level when no /think directive is present. */
   thinkingDefault?: "off" | "minimal" | "low" | "medium" | "high" | "xhigh";
+  /** Enable auto-tools by default (execute tool calls automatically). */
+  autoTools?: boolean;
   /** Default verbose level when no /verbose directive is present. */
   verboseDefault?: "off" | "on" | "full";
   /** Default elevated level when no /elevated directive is present. */

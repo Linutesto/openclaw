@@ -10,12 +10,12 @@ echo "1. Building OpenPaw..."
 pnpm build > /dev/null 2>&1 || { echo "Build failed!"; exit 1; }
 echo "   ✓ Build successful"
 
-# Test basic agent command with --auto-tools
+# Test basic agent command with --auto-tools and --thinking
 echo
-echo "2. Testing --auto-tools flag..."
-echo "   Running: openpaw agent --local --agent main --message 'Say hello' --auto-tools --json"
-timeout 60 pnpm openpaw agent --local --agent main --session-id test-auto-tools --message "Say hello and tell me what 2+2 equals" --auto-tools --json 2>&1 || true
-echo "   ✓ Auto-tools test completed"
+echo "2. Testing --auto-tools with --thinking flag..."
+echo "   Running: openpaw agent --local --agent main --message 'Say hello' --auto-tools --thinking medium --json"
+timeout 60 pnpm openpaw agent --local --agent main --session-id test-auto-tools --message "Say hello and tell me what 2+2 equals" --auto-tools --thinking medium --json 2>&1 || true
+echo "   ✓ Auto-tools + thinking test completed"
 
 # Test SearXNG web discovery (if available)
 echo
@@ -35,6 +35,7 @@ if docker info > /dev/null 2>&1; then
     echo "   Testing sandbox container..."
     docker run --rm \
         --read-only --cap-drop ALL --network none \
+        --tmpfs /workspace:rw,nosuid,nodev,noexec,size=64m \
         --tmpfs /tmp:rw,nosuid,nodev,noexec,size=64m \
         debian:bookworm-slim sh -c 'echo "Sandbox OK"' 2>&1 && echo "   ✓ Docker sandbox working" || echo "   ✗ Docker sandbox failed"
 else
@@ -47,10 +48,16 @@ echo "OpenPaw local agent runtime is functional."
 echo
 echo "Available features:"
 echo "  • --auto-tools: Automatic tool execution with status logging"
+echo "  • --thinking <level>: Reasoning mode (off|minimal|low|medium|high|xhigh)"
 echo "  • --max-tool-iterations <n>: Limit tool iterations (default: 10)"
 echo "  • Built-in tools: bash/exec, file ops, browser, etc."
 echo "  • Web tools: web_fetch, web_search, searxng_search, web_discover"
+echo "  • Memory tools: memory_recall, memory_store, memory_forget, etc."
 echo "  • Sandbox: Docker container isolation (no-new-privileges removed)"
 echo
+echo "Environment variables:"
+echo "  • OPENPAW_THINKING_DEFAULT: Set default thinking level (low|medium|high)"
+echo "  • OPENPAW_AUTO_TOOLS: Enable auto-tools by default (true|false)"
+echo
 echo "To test with a real prompt:"
-echo "  openpaw agent --local --agent main --message 'List files in /tmp' --auto-tools"
+echo "  openpaw agent --local --agent main --message 'List files in /tmp' --auto-tools --thinking medium"

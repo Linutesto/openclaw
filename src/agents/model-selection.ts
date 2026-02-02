@@ -379,17 +379,32 @@ export function resolveThinkingDefault(params: {
   model: string;
   catalog?: ModelCatalogEntry[];
 }): ThinkLevel {
+  // 1. Environment variable override (highest priority for autonomous operation)
+  const envThinking = process.env.OPENPAW_THINKING_DEFAULT?.trim().toLowerCase();
+  if (envThinking && isValidThinkLevel(envThinking)) {
+    return envThinking as ThinkLevel;
+  }
+
+  // 2. Config-based default
   const configured = params.cfg.agents?.defaults?.thinkingDefault;
   if (configured) {
     return configured;
   }
+
+  // 3. Model-specific reasoning capability
   const candidate = params.catalog?.find(
     (entry) => entry.provider === params.provider && entry.id === params.model,
   );
   if (candidate?.reasoning) {
     return "low";
   }
-  return "off";
+
+  // 4. Default to "low" for autonomous operation (changed from "off")
+  return "low";
+}
+
+function isValidThinkLevel(level: string): boolean {
+  return ["off", "minimal", "low", "medium", "high", "xhigh"].includes(level);
 }
 
 /**

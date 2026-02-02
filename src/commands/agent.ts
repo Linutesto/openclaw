@@ -511,7 +511,13 @@ export async function agentCommand(
     }
 
     // Auto-tools mode: log tool execution status and warn about pending client tools
-    const autoTools = opts.autoTools === true;
+    // Resolution: CLI flag > env var > config default > false
+    const envAutoTools = process.env.OPENPAW_AUTO_TOOLS?.trim().toLowerCase();
+    const configAutoTools = cfg.agents?.defaults?.autoTools;
+    const autoTools =
+      opts.autoTools === true ||
+      (opts.autoTools !== false && envAutoTools === "true") ||
+      (opts.autoTools !== false && envAutoTools !== "false" && configAutoTools === true);
     const _maxIterations = opts.maxToolIterations ?? 10; // Reserved for future tool iteration loop
     if (autoTools) {
       const stopReason = result.meta.stopReason;
