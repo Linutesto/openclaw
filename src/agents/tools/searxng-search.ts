@@ -25,8 +25,10 @@ import {
 const DEFAULT_SEARXNG_BASE_URL = "http://localhost:8080";
 const DEFAULT_SEARCH_COUNT = 10;
 const MAX_SEARCH_COUNT = 50;
+const DEFAULT_RATE_LIMIT_MS = 1000; // 1 request per second default
 
 const SEARXNG_CACHE = new Map<string, CacheEntry<Record<string, unknown>>>();
+let lastRequestTime = 0;
 
 const SearxngSearchSchema = Type.Object({
   query: Type.String({ description: "Search query string." }),
@@ -74,6 +76,7 @@ type SearxngConfig = {
   timeoutSeconds?: number;
   cacheTtlMinutes?: number;
   maxResults?: number;
+  rateLimitMs?: number;
 };
 
 type SearxngSearchResult = {
@@ -140,6 +143,7 @@ async function runSearxngSearch(params: {
   baseUrl: string;
   timeoutSeconds: number;
   cacheTtlMs: number;
+  rateLimitMs: number;
   categories?: string;
   engines?: string;
   language?: string;
@@ -153,6 +157,15 @@ async function runSearxngSearch(params: {
   if (cached) {
     return { ...cached.value, cached: true };
   }
+
+  // Rate limiting: wait if needed
+  const now = Date.now();
+  const elapsed = now - lastRequestTime;
+  if (elapsed < params.rateLimitMs && lastRequestTime > 0) {
+    const waitMs = params.rateLimitMs - elapsed;
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
+  lastRequestTime = Date.now();
 
   const start = Date.now();
 
@@ -273,6 +286,7 @@ export function createSearxngSearchTool(options?: {
           baseUrl,
           timeoutSeconds: resolveTimeoutSeconds(searxng?.timeoutSeconds, DEFAULT_TIMEOUT_SECONDS),
           cacheTtlMs: resolveCacheTtlMs(searxng?.cacheTtlMinutes, DEFAULT_CACHE_TTL_MINUTES),
+          rateLimitMs: searxng?.rateLimitMs ?? DEFAULT_RATE_LIMIT_MS,
           categories,
           engines,
           language,

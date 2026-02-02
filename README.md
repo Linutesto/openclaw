@@ -128,6 +128,76 @@ Run `openpaw doctor` to surface risky/misconfigured DM policies.
 - **[Companion apps](https://docs.openpaw.ai/platforms/macos)** — macOS menu bar app + iOS/Android [nodes](https://docs.openpaw.ai/nodes).
 - **[Onboarding](https://docs.openpaw.ai/start/wizard) + [skills](https://docs.openpaw.ai/tools/skills)** — wizard-driven setup with bundled/managed/workspace skills.
 
+## OpenPaw-Specific Features
+
+OpenPaw is a fork of [OpenClaw](https://github.com/openclaw/openclaw) with a focus on **local-first execution** and **real tool integration**.
+
+### Local Models (Ollama)
+
+First-class support for local LLMs via Ollama:
+
+```json
+{
+  "models": {
+    "providers": {
+      "ollama": {
+        "baseUrl": "http://127.0.0.1:11434/v1",
+        "apiKey": "ollama-local",
+        "api": "openai-completions",
+        "models": [
+          { "id": "qwen3:32b", "name": "Qwen3 32B", "contextWindow": 32768 }
+        ]
+      }
+    }
+  }
+}
+```
+
+### QJSON Fractal Memory
+
+Experimental long-term memory via the `memory-qjson` plugin:
+
+- **SQLite + embeddings** with IVF acceleration
+- **Auto-recall**: inject relevant memories into context
+- **Auto-capture**: store important responses automatically
+- **Memory tools**: `memory_recall`, `memory_store`, `memory_stats`, `memory_forget`, `memory_export`, `memory_import`
+
+```bash
+# Enable the memory plugin
+openpaw plugins install memory-qjson
+
+# Environment setup
+export QJSON_AGENTS_HOME=/path/to/qjson_agents
+export QJSON_EMBED_MODEL=nomic-embed-text
+```
+
+### SearXNG Local Web Search
+
+Privacy-respecting web search via your own SearXNG instance:
+
+```json
+{
+  "tools": {
+    "web": {
+      "searxng": {
+        "enabled": true,
+        "baseUrl": "http://localhost:8080"
+      }
+    }
+  }
+}
+```
+
+### Docker Sandbox
+
+Secure code execution with configurable isolation:
+
+- Read-only rootfs with tmpfs scratch space
+- Capability dropping (`--cap-drop ALL`)
+- Network isolation (`--network none`)
+- Resource limits (CPU, memory, pids)
+- Per-agent workspace mounting
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=openpaw/openpaw&type=date&legend=top-left)](https://www.star-history.com/#openpaw/openpaw&type=date&legend=top-left)
@@ -468,10 +538,19 @@ Use these when you’re past the onboarding flow and want the deeper reference.
 
 - [docs.openpaw.ai/gmail-pubsub](https://docs.openpaw.ai/automation/gmail-pubsub)
 
-## Molty
+## Origin & Attribution
 
-OpenPaw was built for **Molty**, a space lobster AI assistant. 🦞
-by Peter Steinberger and the community.
+OpenPaw is a fork of [OpenClaw](https://github.com/openclaw/openclaw), originally built for **Molty**, a space lobster AI assistant. 🦞
+
+**Original work:** Copyright (c) 2025 Peter Steinberger
+**Fork contributions:** Copyright (c) 2026 OpenPaw Contributors
+
+OpenPaw diverges with a focus on:
+- **Local-first execution** — works fully offline with local models
+- **Real tool execution** — tools actually run, not "tool pending"
+- **Honest design** — no fake features, no smoke & mirrors
+
+See [README-ASSASSIN.md](README-ASSASSIN.md) for the full manifesto.
 
 - [openpaw.ai](https://openpaw.ai)
 - [soul.md](https://soul.md)

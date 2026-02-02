@@ -187,6 +187,81 @@ print(json.dumps({"count": count, "dbPath": DB_PATH}))
       return { count: 0, dbPath: "unknown" };
     }
   }
+
+  async forget(query: string): Promise<{ deleted: number }> {
+    const escapedQuery = query.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, "\\n");
+    const code = `
+import sys
+import json
+sys.path.insert(0, "${this.qjsonPath}")
+from qjson_agents.retrieval import DB_PATH, _ensure_db
+import sqlite3
+_ensure_db()
+con = sqlite3.connect(DB_PATH)
+# Delete memories where text contains the query (case-insensitive)
+cur = con.execute("DELETE FROM memories WHERE LOWER(text) LIKE LOWER(?)", ('%${escapedQuery}%',))
+deleted = cur.rowcount
+con.commit()
+con.close()
+print(json.dumps({"deleted": deleted}))
+`;
+    try {
+      const result = await this.runPython(code);
+      return JSON.parse(result);
+    } catch (err) {
+      console.error("[memory-qjson] forget error:", err);
+      return { deleted: 0 };
+    }
+  }
+
+  async exportMemories(): Promise<{ memories: MemoryEntry[]; count: number }> {
+    const code = `
+import sys
+import json
+sys.path.insert(0, "${this.qjsonPath}")
+from qjson_agents.retrieval import DB_PATH, _ensure_db
+import sqlite3
+_ensure_db()
+con = sqlite3.connect(DB_PATH)
+rows = con.execute("SELECT id, text, importance, created_at FROM memories ORDER BY created_at DESC").fetchall()
+con.close()
+out = [{"id": r[0], "text": r[1], "importance": r[2], "createdAt": r[3]} for r in rows]
+print(json.dumps({"memories": out, "count": len(out)}))
+`;
+    try {
+      const result = await this.runPython(code);
+      return JSON.parse(result);
+    } catch (err) {
+      console.error("[memory-qjson] export error:", err);
+      return { memories: [], count: 0 };
+    }
+  }
+
+  async importMemories(memories: Array<{ text: string; importance?: number }>): Promise<{ imported: number }> {
+    const memoriesJson = JSON.stringify(memories).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    const code = `
+import sys
+import json
+sys.path.insert(0, "${this.qjsonPath}")
+from qjson_agents.retrieval import add_memory
+memories = json.loads("${memoriesJson}")
+count = 0
+for m in memories:
+    try:
+        add_memory(m["text"], importance=m.get("importance", 0.5))
+        count += 1
+    except:
+        pass
+print(json.dumps({"imported": count}))
+`;
+    try {
+      const result = await this.runPython(code);
+      return JSON.parse(result);
+    } catch (err) {
+      console.error("[memory-qjson] import error:", err);
+      return { imported: 0 };
+    }
+  }
 }
 
 // ============================================================================
@@ -285,6 +360,78 @@ export default function plugin(api: OpenPawPluginApi) {
       },
     },
     { name: "memory_stats" },
+  );
+
+  api.registerTool(
+    {
+      name: "memory_forget",
+      label: "Memory Forget (QJSON)",
+      description:
+        "Delete memories containing the specified text. Use carefully - this permanently removes matching memories.",
+      parameters: Type.Object({
+        query: Type.String({ description: "Text to match for deletion (case-insensitive partial match)" }),
+      }),
+      async execute(_toolCallId, params) {
+        const { query } = params as { query: string };
+        const result = await bridge.forget(query);
+
+        if (result.deleted === 0) {
+          return {
+            content: [{ type: "text", text: `No memories found matching "${query}"` }],
+            details: result,
+          };
+        }
+
+        return {
+          content: [{ type: "text", text: `Deleted ${result.deleted} memory/memories matching "${query}"` }],
+          details: result,
+        };
+      },
+    },
+    { name: "memory_forget" },
+  );
+
+  api.registerTool(
+    {
+      name: "memory_export",
+      label: "Memory Export (QJSON)",
+      description: "Export all memories from the QJSON store as JSON for backup purposes.",
+      parameters: Type.Object({}),
+      async execute() {
+        const result = await bridge.exportMemories();
+        return {
+          content: [{ type: "text", text: `Exported ${result.count} memories.\n\n${JSON.stringify(result.memories, null, 2)}` }],
+          details: result,
+        };
+      },
+    },
+    { name: "memory_export" },
+  );
+
+  api.registerTool(
+    {
+      name: "memory_import",
+      label: "Memory Import (QJSON)",
+      description: "Import memories into the QJSON store from a JSON array.",
+      parameters: Type.Object({
+        memories: Type.Array(
+          Type.Object({
+            text: Type.String({ description: "Memory text" }),
+            importance: Type.Optional(Type.Number({ description: "Importance 0-1" })),
+          }),
+          { description: "Array of memories to import" },
+        ),
+      }),
+      async execute(_toolCallId, params) {
+        const { memories } = params as { memories: Array<{ text: string; importance?: number }> };
+        const result = await bridge.importMemories(memories);
+        return {
+          content: [{ type: "text", text: `Imported ${result.imported} memories.` }],
+          details: result,
+        };
+      },
+    },
+    { name: "memory_import" },
   );
 
   // Auto-recall hook: inject memories before LLM call

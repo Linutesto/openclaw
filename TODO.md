@@ -17,8 +17,8 @@
 ### Docker Sandbox
 - [x] Remove `no-new-privileges` flag (causes exit 255)
 - [x] Basic sandbox config (read-only, cap-drop, tmpfs)
-- [ ] Add configurable network policies
-- [ ] Add resource limits (CPU, memory)
+- [x] Add configurable network policies (via `docker.network`)
+- [x] Add resource limits (CPU, memory, pidsLimit, ulimits)
 - [ ] Add execution timeout handling
 - [ ] Test on various host configurations
 
@@ -37,9 +37,9 @@
 - [x] Create `searxng-search.ts` tool
 - [x] Configurable via `tools.web.searxng.baseUrl`
 - [x] Environment variable `SEARXNG_URL` support
-- [ ] Add result caching
-- [ ] Add rate limiting
-- [ ] Handle SearXNG errors gracefully
+- [x] Add result caching (in-memory with TTL)
+- [x] Add rate limiting (configurable via `rateLimitMs`)
+- [x] Handle SearXNG errors gracefully (error response with hints)
 
 ### Web Discover Tool
 - [x] Create `web-discover.ts` (search + fetch + extract)
@@ -66,9 +66,9 @@
 - [x] `memory_recall` - search memories
 - [x] `memory_store` - save information
 - [x] `memory_stats` - show statistics
-- [ ] `memory_forget` - delete specific memories
-- [ ] `memory_export` - backup memories
-- [ ] `memory_import` - restore memories
+- [x] `memory_forget` - delete specific memories
+- [x] `memory_export` - backup memories
+- [x] `memory_import` - restore memories
 
 ---
 
@@ -208,4 +208,4 @@ openpaw plugin memory-qjson stats
 
 ---
 
-*Last updated: 2026-02-01*
+*Last updated: 2026-02-02*
