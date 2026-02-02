@@ -62,9 +62,23 @@ export function resolveSandboxDockerConfig(params: {
       DEFAULT_SANDBOX_CONTAINER_PREFIX,
     workdir: agentDocker?.workdir ?? globalDocker?.workdir ?? DEFAULT_SANDBOX_WORKDIR,
     readOnlyRoot: agentDocker?.readOnlyRoot ?? globalDocker?.readOnlyRoot ?? true,
-    tmpfs: agentDocker?.tmpfs ?? globalDocker?.tmpfs ?? ["/tmp", "/var/tmp", "/run"],
+    // Run sandbox as the host user so bind-mounted /workspace is writable.
+    // This is required when we drop ALL caps (root has no DAC override).
+    user:
+      agentDocker?.user ??
+      globalDocker?.user ??
+      (process.getuid && process.getgid ? `${process.getuid()}:${process.getgid()}` : undefined),
+    // When rootfs is read-only, we MUST provide writable tmpfs mounts or tools will fail
+    // (shell, node, and many CLIs expect writable /tmp; tools expect writable /workspace).
+    // NOTE: We intentionally do NOT set --security-opt no-new-privileges (breaks exec on some hosts).
+    tmpfs: agentDocker?.tmpfs ??
+      globalDocker?.tmpfs ?? [
+        // Read-only rootfs needs writable scratch space.
+        "/tmp:rw,nosuid,nodev,noexec,size=256m",
+        "/var/tmp:rw,nosuid,nodev,noexec,size=256m",
+        "/run:rw,nosuid,nodev,noexec,size=64m",
+      ],
     network: agentDocker?.network ?? globalDocker?.network ?? "none",
-    user: agentDocker?.user ?? globalDocker?.user,
     capDrop: agentDocker?.capDrop ?? globalDocker?.capDrop ?? ["ALL"],
     env,
     setupCommand: agentDocker?.setupCommand ?? globalDocker?.setupCommand,
