@@ -270,15 +270,15 @@ choose_ollama_model() {
     die "No Ollama models found. Run: ollama pull <model>"
   fi
 
-  echo
-  info "Available Ollama models:"
-  echo
+  echo >&2
+  info "Available Ollama models:" >&2
+  echo >&2
   local i
   for i in "${!models[@]}"; do
-    printf '  %2d) %s\n' $((i + 1)) "${models[$i]}"
+    printf '  %2d) %s\n' $((i + 1)) "${models[$i]}" >&2
   done
-  echo
-  echo -n "Select a model (number or name): "
+  echo >&2
+  echo -n "Select a model (number or name): " >&2
   local choice
   read -r choice
 
