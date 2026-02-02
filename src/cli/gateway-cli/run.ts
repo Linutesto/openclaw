@@ -217,7 +217,14 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
       '"gateway.remote.token" is for remote CLI calls; it does not enable local gateway auth.',
     );
   }
-  if (resolvedAuthMode === "token" && !hasToken && !resolvedAuth.allowTailscale) {
+  // Allow no-auth when binding to loopback (local-only mode)
+  const isLoopbackNoAuth = bind === "loopback" && !cfg.gateway?.auth?.mode && !hasToken;
+  if (
+    resolvedAuthMode === "token" &&
+    !hasToken &&
+    !resolvedAuth.allowTailscale &&
+    !isLoopbackNoAuth
+  ) {
     defaultRuntime.error(
       [
         "Gateway auth is set to token, but no token is configured.",

@@ -79,7 +79,10 @@ export async function resolveGatewayRuntimeConfig(params: {
   const canvasHostEnabled =
     process.env.OPENPAW_SKIP_CANVAS_HOST !== "1" && params.cfg.canvasHost?.enabled !== false;
 
-  assertGatewayAuthConfigured(resolvedAuth);
+  // Only enforce auth config for non-loopback binds (local mode can skip auth)
+  if (!isLoopbackHost(bindHost)) {
+    assertGatewayAuthConfigured(resolvedAuth);
+  }
   if (tailscaleMode === "funnel" && authMode !== "password") {
     throw new Error(
       "tailscale funnel requires gateway auth mode=password (set gateway.auth.password or OPENPAW_GATEWAY_PASSWORD)",
