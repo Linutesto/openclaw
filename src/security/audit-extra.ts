@@ -451,26 +451,12 @@ function resolveToolPolicies(params: {
   return policies;
 }
 
-function hasWebSearchKey(cfg: OpenClawConfig, env: NodeJS.ProcessEnv): boolean {
-  const search = cfg.tools?.web?.search;
-  return Boolean(
-    search?.apiKey ||
-    search?.perplexity?.apiKey ||
-    env.BRAVE_API_KEY ||
-    env.PERPLEXITY_API_KEY ||
-    env.OPENROUTER_API_KEY,
-  );
-}
-
-function isWebSearchEnabled(cfg: OpenClawConfig, env: NodeJS.ProcessEnv): boolean {
+function isWebSearchEnabled(cfg: OpenClawConfig): boolean {
   const enabled = cfg.tools?.web?.search?.enabled;
   if (enabled === false) {
     return false;
   }
-  if (enabled === true) {
-    return true;
-  }
-  return hasWebSearchKey(cfg, env);
+  return true;
 }
 
 function isWebFetchEnabled(cfg: OpenClawConfig): boolean {
@@ -530,7 +516,7 @@ export function collectSmallModelRiskFindings(params: {
       agentId,
     });
     const exposed: string[] = [];
-    if (isWebSearchEnabled(params.cfg, params.env)) {
+    if (isWebSearchEnabled(params.cfg)) {
       if (isToolAllowedByPolicies("web_search", policies)) {
         exposed.push("web_search");
       }

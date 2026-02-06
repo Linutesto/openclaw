@@ -1,19 +1,32 @@
 import { describe, expect, it } from "vitest";
 import { validateConfigObject } from "./config.js";
 
-describe("web search provider config", () => {
-  it("accepts perplexity provider and config", () => {
+describe("web search config", () => {
+  it("accepts local SearX-backed web_search config", () => {
     const res = validateConfigObject({
       tools: {
         web: {
           search: {
             enabled: true,
-            provider: "perplexity",
-            perplexity: {
-              apiKey: "test-key",
-              baseUrl: "https://api.perplexity.ai",
-              model: "perplexity/sonar-pro",
-            },
+            baseUrl: "http://localhost:8080",
+            maxResults: 20,
+            timeoutSeconds: 15,
+            cacheTtlMinutes: 3,
+            rateLimitMs: 500,
+            defaultCrawlPages: 2,
+            maxCrawlPages: 6,
+            defaultExtractMode: "markdown",
+            defaultMaxContentChars: 8000,
+            crawlTimeoutSeconds: 12,
+          },
+          searxng: {
+            enabled: true,
+            baseUrl: "http://localhost:8080",
+          },
+          discover: {
+            enabled: true,
+            searxngBaseUrl: "http://localhost:8080",
+            maxPages: 3,
           },
         },
       },

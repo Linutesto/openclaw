@@ -37,6 +37,76 @@ describe("before_tool_call hook integration", () => {
     expect(execute).toHaveBeenCalledWith("call-1", { path: "/tmp/file" }, undefined, undefined);
   });
 
+  it("blocks manual local web search via exec with web tool guidance", async () => {
+    hookRunner.hasHooks.mockReturnValue(false);
+    const execute = vi.fn().mockResolvedValue({ content: [], details: { ok: true } });
+    // oxlint-disable-next-line typescript/no-explicit-any
+    const tool = wrapToolWithBeforeToolCallHook({ name: "exec", execute } as any);
+
+    await expect(
+      tool.execute(
+        "call-1b",
+        {
+          command:
+            "curl -s 'http://127.0.0.1:8080/search?q=ai+governance&format=json' | jq '.results[:3]'",
+        },
+        undefined,
+        undefined,
+      ),
+    ).rejects.toThrow("use dedicated web tools");
+    await expect(
+      tool.execute(
+        "call-1c",
+        {
+          command:
+            "curl -s 'http://127.0.0.1:8080/search?q=ai+governance&format=json' | jq '.results[:3]'",
+        },
+        undefined,
+        undefined,
+      ),
+    ).rejects.toThrow("web_search");
+    expect(execute).not.toHaveBeenCalled();
+  });
+
+  it("includes jq hex escape guidance when blocking manual local web search", async () => {
+    hookRunner.hasHooks.mockReturnValue(false);
+    const execute = vi.fn().mockResolvedValue({ content: [], details: { ok: true } });
+    // oxlint-disable-next-line typescript/no-explicit-any
+    const tool = wrapToolWithBeforeToolCallHook({ name: "exec", execute } as any);
+
+    await expect(
+      tool.execute(
+        "call-1d",
+        {
+          command:
+            "curl -s 'http://localhost:8080/search?q=autonomous+ai&format=json' | jq -r '.results[:3] | .[] | \"\\\\n[\\\\x5B\\\\x5D\"'",
+        },
+        undefined,
+        undefined,
+      ),
+    ).rejects.toThrow("jq strings do not support \\xNN escapes");
+    expect(execute).not.toHaveBeenCalled();
+  });
+
+  it("allows explicit override for raw web exec commands", async () => {
+    hookRunner.hasHooks.mockReturnValue(false);
+    const execute = vi.fn().mockResolvedValue({ content: [], details: { ok: true } });
+    // oxlint-disable-next-line typescript/no-explicit-any
+    const tool = wrapToolWithBeforeToolCallHook({ name: "exec", execute } as any);
+
+    await tool.execute(
+      "call-1e",
+      {
+        command:
+          "OPENCLAW_ALLOW_WEB_EXEC=1 curl -s 'http://127.0.0.1:8080/search?q=ai+governance&format=json'",
+      },
+      undefined,
+      undefined,
+    );
+
+    expect(execute).toHaveBeenCalledTimes(1);
+  });
+
   it("allows hook to modify parameters", async () => {
     hookRunner.hasHooks.mockReturnValue(true);
     hookRunner.runBeforeToolCall.mockResolvedValue({ params: { mode: "safe" } });

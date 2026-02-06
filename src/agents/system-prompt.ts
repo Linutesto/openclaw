@@ -143,6 +143,58 @@ function buildVoiceSection(params: { isMinimal: boolean; ttsHint?: string }) {
   return ["## Voice (TTS)", hint, ""];
 }
 
+function buildWebResearchSection(params: {
+  availableTools: Set<string>;
+  resolveToolName: (normalized: string) => string;
+  includeExecFallbackNote: boolean;
+}) {
+  const hasWebSearch = params.availableTools.has("web_search");
+  const hasWebDiscover = params.availableTools.has("web_discover");
+  const hasSearxngSearch = params.availableTools.has("searxng_search");
+  const hasWebFetch = params.availableTools.has("web_fetch");
+  if (!hasWebSearch && !hasWebDiscover && !hasSearxngSearch && !hasWebFetch) {
+    return [];
+  }
+
+  const webSearchName = params.resolveToolName("web_search");
+  const webDiscoverName = params.resolveToolName("web_discover");
+  const searxngSearchName = params.resolveToolName("searxng_search");
+  const webFetchName = params.resolveToolName("web_fetch");
+  const lines = [
+    "## Web Research Mode",
+    "- Choose mode by intent: quick scan/link list -> surface; multi-source synthesis/citations -> deep.",
+    hasWebSearch
+      ? `- Surface search: use \`${webSearchName}\` with \`searchDepth: \"surface\"\` (or \`crawlPages: 0\`).`
+      : "",
+    hasWebSearch
+      ? `- Surface example: \`${webSearchName}({ query: \"autonomous ai site:arxiv.org\", searchDepth: \"surface\", count: 5 })\`.`
+      : "",
+    hasWebDiscover && hasWebSearch
+      ? `- Deep search: prefer \`${webDiscoverName}\`; alternatively use \`${webSearchName}\` with \`searchDepth: \"deep\"\` (or \`crawlPages > 0\`).`
+      : hasWebDiscover
+        ? `- Deep search: use \`${webDiscoverName}\` (search + fetch + extraction in one call).`
+        : hasWebSearch
+          ? `- Deep search: use \`${webSearchName}\` with \`searchDepth: \"deep\"\` (or \`crawlPages > 0\`).`
+          : "",
+    hasWebDiscover
+      ? `- Deep example: \`${webDiscoverName}({ query: \"ai governance site:arxiv.org\", searchDepth: \"deep\", maxPages: 3 })\`.`
+      : hasWebSearch
+        ? `- Deep example: \`${webSearchName}({ query: \"ai governance site:arxiv.org\", searchDepth: \"deep\", crawlPages: 3 })\`.`
+        : "",
+    hasSearxngSearch
+      ? `- Local search-only fallback: use \`${searxngSearchName}\` when you only need ranked links/snippets.`
+      : "",
+    hasWebFetch
+      ? `- Single-page deepening: use \`${webFetchName}\` when you already have a URL and need extraction.`
+      : "",
+    params.includeExecFallbackNote
+      ? "- Do not use `exec` + `curl/jq` for normal web research unless the user explicitly asks or web tools are unavailable."
+      : "",
+    "",
+  ];
+  return lines.filter(Boolean);
+}
+
 function buildDocsSection(params: { docsPath?: string; isMinimal: boolean; readToolName: string }) {
   const docsPath = params.docsPath?.trim();
   if (!docsPath || params.isMinimal) {
@@ -225,8 +277,11 @@ export function buildAgentSystemPrompt(params: {
     ls: "List directory contents",
     exec: "Run shell commands (pty available for TTY-required CLIs)",
     process: "Manage background exec sessions",
-    web_search: "Search the web (Brave API)",
+    web_search:
+      "Surface/deep web search via local SearX (set searchDepth: surface|deep; optional crawl/extract controls)",
     web_fetch: "Fetch and extract readable content from a URL",
+    searxng_search: "Dedicated local SearXNG search (search-only, fast link discovery)",
+    web_discover: "Deep web research: search + crawl + extraction into structured output",
     // Channel docking: add login tools here when a channel needs interactive linking.
     browser: "Control web browser",
     canvas: "Present/eval/snapshot the Canvas",
@@ -256,6 +311,8 @@ export function buildAgentSystemPrompt(params: {
     "process",
     "web_search",
     "web_fetch",
+    "searxng_search",
+    "web_discover",
     "browser",
     "canvas",
     "nodes",
@@ -369,6 +426,11 @@ export function buildAgentSystemPrompt(params: {
     isMinimal,
     readToolName,
   });
+  const webResearchSection = buildWebResearchSection({
+    availableTools,
+    resolveToolName,
+    includeExecFallbackNote: availableTools.has("exec"),
+  });
   const workspaceNotes = (params.workspaceNotes ?? []).map((note) => note.trim()).filter(Boolean);
 
   // For "none" mode, return just the basic identity line
@@ -410,6 +472,7 @@ export function buildAgentSystemPrompt(params: {
     "Keep narration brief and value-dense; avoid repeating obvious steps.",
     "Use plain human language for narration unless in a technical context.",
     "",
+    ...webResearchSection,
     ...safetySection,
     "## OpenClaw CLI Quick Reference",
     "OpenClaw is controlled via subcommands. Do not invent commands.",

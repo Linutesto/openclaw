@@ -98,7 +98,12 @@ export function buildGatewayConnectionDetails(
   const remote = isRemoteMode ? config.gateway?.remote : undefined;
   const tlsEnabled = config.gateway?.tls?.enabled === true;
   const localPort = resolveGatewayPort(config);
-  const tailnetIPv4 = pickPrimaryTailnetIPv4();
+  let tailnetIPv4: string | null = null;
+  try {
+    tailnetIPv4 = pickPrimaryTailnetIPv4();
+  } catch {
+    tailnetIPv4 = null;
+  }
   const bindMode = config.gateway?.bind ?? "loopback";
   const preferTailnet = bindMode === "tailnet" && !!tailnetIPv4;
   const scheme = tlsEnabled ? "wss" : "ws";

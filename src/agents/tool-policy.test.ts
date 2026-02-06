@@ -25,5 +25,15 @@ describe("tool-policy", () => {
     expect(group).toContain("browser");
     expect(group).toContain("message");
     expect(group).toContain("session_status");
+    expect(group).toContain("searxng_search");
+    expect(group).toContain("web_discover");
+  });
+
+  it("includes deep and dedicated web tools in group:web", () => {
+    const group = TOOL_GROUPS["group:web"];
+    expect(group).toContain("web_search");
+    expect(group).toContain("web_fetch");
+    expect(group).toContain("searxng_search");
+    expect(group).toContain("web_discover");
   });
 });

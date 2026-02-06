@@ -286,8 +286,8 @@ describe("runOnboardingWizard", () => {
   });
 
   it("shows the web search hint at the end of onboarding", async () => {
-    const prevBraveKey = process.env.BRAVE_API_KEY;
-    delete process.env.BRAVE_API_KEY;
+    const prevSearxUrl = process.env.SEARXNG_URL;
+    delete process.env.SEARXNG_URL;
 
     try {
       const note: WizardPrompter["note"] = vi.fn(async () => {});
@@ -327,10 +327,10 @@ describe("runOnboardingWizard", () => {
       expect(calls.length).toBeGreaterThan(0);
       expect(calls.some((call) => call?.[1] === "Web search (optional)")).toBe(true);
     } finally {
-      if (prevBraveKey === undefined) {
-        delete process.env.BRAVE_API_KEY;
+      if (prevSearxUrl === undefined) {
+        delete process.env.SEARXNG_URL;
       } else {
-        process.env.BRAVE_API_KEY = prevBraveKey;
+        process.env.SEARXNG_URL = prevSearxUrl;
       }
     }
   });

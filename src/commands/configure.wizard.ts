@@ -94,12 +94,14 @@ async function promptWebToolsConfig(
 ): Promise<OpenClawConfig> {
   const existingSearch = nextConfig.tools?.web?.search;
   const existingFetch = nextConfig.tools?.web?.fetch;
-  const hasSearchKey = Boolean(existingSearch?.apiKey);
+  const resolvedBaseUrl =
+    existingSearch?.baseUrl?.trim() || process.env.SEARXNG_URL?.trim() || "http://localhost:8080";
 
   note(
     [
       "Web search lets your agent look things up online using the `web_search` tool.",
-      "It requires a Brave Search API key (you can store it in the config or set BRAVE_API_KEY in the Gateway environment).",
+      "OpenClaw uses a local SearX/SearXNG endpoint for web_search.",
+      "Set a base URL in config or provide SEARXNG_URL in the Gateway environment.",
       "Docs: https://docs.openclaw.ai/tools/web",
     ].join("\n"),
     "Web search",
@@ -107,8 +109,8 @@ async function promptWebToolsConfig(
 
   const enableSearch = guardCancel(
     await confirm({
-      message: "Enable web_search (Brave Search)?",
-      initialValue: existingSearch?.enabled ?? hasSearchKey,
+      message: "Enable web_search (local SearX)?",
+      initialValue: existingSearch?.enabled ?? true,
     }),
     runtime,
   );
@@ -119,27 +121,33 @@ async function promptWebToolsConfig(
   };
 
   if (enableSearch) {
-    const keyInput = guardCancel(
+    const baseUrlInput = guardCancel(
       await text({
-        message: hasSearchKey
-          ? "Brave Search API key (leave blank to keep current or use BRAVE_API_KEY)"
-          : "Brave Search API key (paste it here; leave blank to use BRAVE_API_KEY)",
-        placeholder: hasSearchKey ? "Leave blank to keep current" : "BSA...",
+        message: "SearX base URL (leave blank to keep current/default)",
+        placeholder: resolvedBaseUrl,
+        defaultValue: existingSearch?.baseUrl ?? process.env.SEARXNG_URL ?? resolvedBaseUrl,
       }),
       runtime,
     );
-    const key = String(keyInput ?? "").trim();
-    if (key) {
-      nextSearch = { ...nextSearch, apiKey: key };
-    } else if (!hasSearchKey) {
-      note(
-        [
-          "No key stored yet, so web_search will stay unavailable.",
-          "Store a key here or set BRAVE_API_KEY in the Gateway environment.",
-          "Docs: https://docs.openclaw.ai/tools/web",
-        ].join("\n"),
-        "Web search",
-      );
+    const baseUrl = String(baseUrlInput ?? "").trim();
+    if (baseUrl) {
+      nextSearch = { ...nextSearch, baseUrl };
+    }
+
+    const defaultCrawlPagesInput = guardCancel(
+      await text({
+        message: "Default crawl depth for web_search (0 = search-only)",
+        placeholder: String(existingSearch?.defaultCrawlPages ?? 0),
+        defaultValue: String(existingSearch?.defaultCrawlPages ?? 0),
+      }),
+      runtime,
+    );
+    const parsedDefaultCrawlPages = Number.parseInt(
+      String(defaultCrawlPagesInput ?? "").trim(),
+      10,
+    );
+    if (Number.isFinite(parsedDefaultCrawlPages) && parsedDefaultCrawlPages >= 0) {
+      nextSearch = { ...nextSearch, defaultCrawlPages: parsedDefaultCrawlPages };
     }
   }
 

@@ -57,6 +57,25 @@ function describeToolExecutionError(err: unknown): {
   return { message: String(err) };
 }
 
+function augmentToolErrorMessage(toolName: string, message: string): string {
+  if (toolName !== "exec") {
+    return message;
+  }
+  if (!/jq:\s*error:\s*Invalid escape/i.test(message)) {
+    return message;
+  }
+  if (!/\\x/.test(message)) {
+    return message;
+  }
+  return [
+    message,
+    "Hint: jq strings do not support \\xNN escapes; use literal [] or \\u005B/\\u005D.",
+    'Surface search example: web_search {"query":"...","searchDepth":"surface","count":5}.',
+    'Deep search example: web_discover {"query":"...","searchDepth":"deep","maxPages":3}.',
+    "For web research, prefer web_search/web_discover instead of exec+curl+jq.",
+  ].join("\n");
+}
+
 function splitToolExecuteArgs(args: ToolExecuteArgsAny): {
   toolCallId: string;
   params: unknown;
@@ -106,14 +125,15 @@ export function toToolDefinitions(tools: AnyAgentTool[]): ToolDefinition[] {
             throw err;
           }
           const described = describeToolExecutionError(err);
+          const errorMessage = augmentToolErrorMessage(normalizedName, described.message);
           if (described.stack && described.stack !== described.message) {
             logDebug(`tools: ${normalizedName} failed stack:\n${described.stack}`);
           }
-          logError(`[tools] ${normalizedName} failed: ${described.message}`);
+          logError(`[tools] ${normalizedName} failed: ${errorMessage}`);
           return jsonResult({
             status: "error",
             tool: normalizedName,
-            error: described.message,
+            error: errorMessage,
           });
         }
       },

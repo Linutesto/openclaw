@@ -476,29 +476,30 @@ export async function finalizeOnboardingWizard(
     );
   }
 
-  const webSearchKey = (nextConfig.tools?.web?.search?.apiKey ?? "").trim();
-  const webSearchEnv = (process.env.BRAVE_API_KEY ?? "").trim();
-  const hasWebSearchKey = Boolean(webSearchKey || webSearchEnv);
+  const webSearchEnabled = nextConfig.tools?.web?.search?.enabled !== false;
+  const webSearchBaseUrl =
+    (nextConfig.tools?.web?.search?.baseUrl ?? "").trim() ||
+    (process.env.SEARXNG_URL ?? "").trim() ||
+    "http://localhost:8080";
   await prompter.note(
-    hasWebSearchKey
+    webSearchEnabled
       ? [
           "Web search is enabled, so your agent can look things up online when needed.",
           "",
-          webSearchKey
-            ? "API key: stored in config (tools.web.search.apiKey)."
-            : "API key: provided via BRAVE_API_KEY env var (Gateway environment).",
+          `SearX endpoint: ${webSearchBaseUrl}`,
+          "You can tune crawl depth per call via web_search.crawlPages (or set tools.web.search.defaultCrawlPages).",
           "Docs: https://docs.openclaw.ai/tools/web",
         ].join("\n")
       : [
-          "If you want your agent to be able to search the web, you’ll need an API key.",
+          "If you want your agent to be able to search the web, enable web_search and set a SearX endpoint.",
           "",
-          "OpenClaw uses Brave Search for the `web_search` tool. Without a Brave Search API key, web search won’t work.",
+          "OpenClaw uses local SearX/SearXNG for the `web_search` tool.",
           "",
           "Set it up interactively:",
           `- Run: ${formatCliCommand("openclaw configure --section web")}`,
-          "- Enable web_search and paste your Brave Search API key",
+          "- Enable web_search and set tools.web.search.baseUrl",
           "",
-          "Alternative: set BRAVE_API_KEY in the Gateway environment (no config changes).",
+          "Alternative: set SEARXNG_URL in the Gateway environment (no config changes).",
           "Docs: https://docs.openclaw.ai/tools/web",
         ].join("\n"),
     "Web search (optional)",

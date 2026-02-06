@@ -115,6 +115,20 @@ describe("buildAgentSystemPrompt", () => {
     expect(prompt).toContain("sessions_send");
   });
 
+  it("includes explicit surface/deep web research guidance when web tools are available", () => {
+    const prompt = buildAgentSystemPrompt({
+      workspaceDir: "/tmp/openclaw",
+      toolNames: ["web_search", "web_discover", "web_fetch", "searxng_search", "exec"],
+    });
+
+    expect(prompt).toContain("## Web Research Mode");
+    expect(prompt).toContain('searchDepth: "surface"');
+    expect(prompt).toContain('searchDepth: "deep"');
+    expect(prompt).toContain("Surface example:");
+    expect(prompt).toContain("Deep example:");
+    expect(prompt).toContain("Do not use `exec` + `curl/jq`");
+  });
+
   it("preserves tool casing in the prompt", () => {
     const prompt = buildAgentSystemPrompt({
       workspaceDir: "/tmp/openclaw",

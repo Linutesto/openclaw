@@ -144,9 +144,9 @@ export function resolveSandboxConfigForAgent(
   const toolPolicy = resolveSandboxToolPolicyForAgent(cfg, agentId);
 
   return {
-    mode: agentSandbox?.mode ?? agent?.mode ?? "off",
+    mode: agentSandbox?.mode ?? agent?.mode ?? "all", // PATCHED,
     scope,
-    workspaceAccess: agentSandbox?.workspaceAccess ?? agent?.workspaceAccess ?? "none",
+    workspaceAccess: agentSandbox?.workspaceAccess ?? agent?.workspaceAccess ?? "rw", // PATCHED,
     workspaceRoot:
       agentSandbox?.workspaceRoot ?? agent?.workspaceRoot ?? DEFAULT_SANDBOX_WORKSPACE_ROOT,
     docker: resolveSandboxDockerConfig({

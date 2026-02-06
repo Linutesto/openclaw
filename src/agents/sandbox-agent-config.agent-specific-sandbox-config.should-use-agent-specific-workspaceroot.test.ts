@@ -69,6 +69,7 @@ describe("Agent-specific sandbox config", () => {
             mode: "all",
             scope: "agent",
             workspaceRoot: "~/.openclaw/sandboxes", // Global default
+            workspaceAccess: "ro",
           },
         },
         list: [

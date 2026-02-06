@@ -289,7 +289,17 @@
     "web_search": {
       "emoji": "🔎",
       "title": "Web Search",
+      "detailKeys": ["query", "searchDepth", "count", "crawlPages"]
+    },
+    "searxng_search": {
+      "emoji": "🧭",
+      "title": "SearXNG Search",
       "detailKeys": ["query", "count"]
+    },
+    "web_discover": {
+      "emoji": "🧠",
+      "title": "Web Discover",
+      "detailKeys": ["query", "searchDepth", "maxResults", "maxPages"]
     },
     "web_fetch": {
       "emoji": "📄",

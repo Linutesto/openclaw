@@ -45,4 +45,26 @@ describe("pi tool definition adapter", () => {
       error: "nope",
     });
   });
+
+  it("augments exec jq invalid escape errors with actionable guidance", async () => {
+    const tool = {
+      name: "exec",
+      label: "Exec",
+      description: "throws",
+      parameters: {},
+      execute: async () => {
+        throw new Error(
+          'jq: error: Invalid escape at line 1, column 4 (while parsing "\\"\\\\x\\"")',
+        );
+      },
+    } satisfies AgentTool<unknown, unknown>;
+
+    const defs = toToolDefinitions([tool]);
+    const result = await defs[0].execute("call3", {}, undefined, undefined);
+    const details = result.details as { error?: string };
+    expect(details.error).toContain("jq strings do not support \\xNN escapes");
+    expect(details.error).toContain("web_search");
+    expect(details.error).toContain("web_discover");
+    expect(details.error).toContain("Surface search example");
+  });
 });

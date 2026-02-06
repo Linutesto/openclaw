@@ -116,6 +116,13 @@ afterAll(async () => {
 
 const makeOpenAiConfig = (modelIds: string[]) =>
   ({
+    agents: {
+      defaults: {
+        sandbox: {
+          mode: "off",
+        },
+      },
+    },
     models: {
       providers: {
         openai: {

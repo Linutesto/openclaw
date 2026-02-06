@@ -334,27 +334,46 @@ export type ToolsConfig = {
   byProvider?: Record<string, ToolPolicyConfig>;
   web?: {
     search?: {
-      /** Enable web search tool (default: true when API key is present). */
+      /** Enable web_search (default: true). */
       enabled?: boolean;
-      /** Search provider ("brave" or "perplexity"). */
-      provider?: "brave" | "perplexity";
-      /** Brave Search API key (optional; defaults to BRAVE_API_KEY env var). */
-      apiKey?: string;
-      /** Default search results count (1-10). */
+      /** Local SearX/SearXNG base URL (fallback: SEARXNG_URL env var, then http://localhost:8080). */
+      baseUrl?: string;
+      /** Default search results count (1-50). */
       maxResults?: number;
       /** Timeout in seconds for search requests. */
       timeoutSeconds?: number;
       /** Cache TTL in minutes for search results. */
       cacheTtlMinutes?: number;
-      /** Perplexity-specific configuration (used when provider="perplexity"). */
-      perplexity?: {
-        /** API key for Perplexity or OpenRouter (defaults to PERPLEXITY_API_KEY or OPENROUTER_API_KEY env var). */
-        apiKey?: string;
-        /** Base URL for API requests (defaults to OpenRouter: https://openrouter.ai/api/v1). */
-        baseUrl?: string;
-        /** Model to use (defaults to "perplexity/sonar-pro"). */
-        model?: string;
-      };
+      /** Min delay between outbound search calls (default: 1000). */
+      rateLimitMs?: number;
+      /** Default number of pages to crawl for content extraction (0 = search only). */
+      defaultCrawlPages?: number;
+      /** Hard cap for crawl pages per call (default: 10). */
+      maxCrawlPages?: number;
+      /** Default extraction mode for crawled pages. */
+      defaultExtractMode?: "markdown" | "text";
+      /** Default max extracted characters per crawled page. */
+      defaultMaxContentChars?: number;
+      /** Timeout in seconds for crawling fetched pages. */
+      crawlTimeoutSeconds?: number;
+    };
+    searxng?: {
+      enabled?: boolean;
+      baseUrl?: string;
+      timeoutSeconds?: number;
+      cacheTtlMinutes?: number;
+      maxResults?: number;
+      rateLimitMs?: number;
+    };
+    discover?: {
+      enabled?: boolean;
+      searxngBaseUrl?: string;
+      timeoutSeconds?: number;
+      fetchTimeoutSeconds?: number;
+      cacheTtlMinutes?: number;
+      maxResults?: number;
+      maxPages?: number;
+      maxContentChars?: number;
     };
     fetch?: {
       /** Enable web fetch tool (default: true). */

@@ -171,19 +171,42 @@ export const ToolPolicySchema = ToolPolicyBaseSchema.superRefine((value, ctx) =>
 export const ToolsWebSearchSchema = z
   .object({
     enabled: z.boolean().optional(),
-    provider: z.union([z.literal("brave"), z.literal("perplexity")]).optional(),
-    apiKey: z.string().optional(),
+    baseUrl: z.string().optional(),
     maxResults: z.number().int().positive().optional(),
     timeoutSeconds: z.number().int().positive().optional(),
     cacheTtlMinutes: z.number().nonnegative().optional(),
-    perplexity: z
-      .object({
-        apiKey: z.string().optional(),
-        baseUrl: z.string().optional(),
-        model: z.string().optional(),
-      })
-      .strict()
-      .optional(),
+    rateLimitMs: z.number().int().nonnegative().optional(),
+    defaultCrawlPages: z.number().int().nonnegative().optional(),
+    maxCrawlPages: z.number().int().nonnegative().optional(),
+    defaultExtractMode: z.union([z.literal("markdown"), z.literal("text")]).optional(),
+    defaultMaxContentChars: z.number().int().positive().optional(),
+    crawlTimeoutSeconds: z.number().int().positive().optional(),
+  })
+  .strict()
+  .optional();
+
+export const ToolsWebSearxngSchema = z
+  .object({
+    enabled: z.boolean().optional(),
+    baseUrl: z.string().optional(),
+    timeoutSeconds: z.number().int().positive().optional(),
+    cacheTtlMinutes: z.number().nonnegative().optional(),
+    maxResults: z.number().int().positive().optional(),
+    rateLimitMs: z.number().int().nonnegative().optional(),
+  })
+  .strict()
+  .optional();
+
+export const ToolsWebDiscoverSchema = z
+  .object({
+    enabled: z.boolean().optional(),
+    searxngBaseUrl: z.string().optional(),
+    timeoutSeconds: z.number().int().positive().optional(),
+    fetchTimeoutSeconds: z.number().int().positive().optional(),
+    cacheTtlMinutes: z.number().nonnegative().optional(),
+    maxResults: z.number().int().positive().optional(),
+    maxPages: z.number().int().nonnegative().optional(),
+    maxContentChars: z.number().int().positive().optional(),
   })
   .strict()
   .optional();
@@ -204,6 +227,8 @@ export const ToolsWebFetchSchema = z
 export const ToolsWebSchema = z
   .object({
     search: ToolsWebSearchSchema,
+    searxng: ToolsWebSearxngSchema,
+    discover: ToolsWebDiscoverSchema,
     fetch: ToolsWebFetchSchema,
   })
   .strict()
